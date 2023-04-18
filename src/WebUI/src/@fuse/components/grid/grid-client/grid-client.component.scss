@@ -1,0 +1,20 @@
+.active-icon {
+  border-radius: 50%;
+}
+
+.grid-action {
+  margin-right: 10px;
+  cursor:pointer;
+}
+
+grid-client .datatable-body {
+  height: 400px !important;
+  overflow-y: visible !important;
+}
+
+.grid-selection > .mat-select-trigger {
+  height: 30px;
+}
+.mat-tooltip {
+  font-size: 14px !important;
+}

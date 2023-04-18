@@ -1,0 +1,250 @@
+@import "@fuse/scss/fuse";
+:host {
+ 
+  .mat-radio-button {
+    margin: 15px 12px;
+  }
+
+  .margin-tb-5 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .radio-label {
+    align-self: center;
+  }
+
+  mat-form-field {
+    margin: 0 5px;
+  }
+
+  .add-file-button {
+    margin-bottom: 20px;
+  }
+
+  .sellers {
+    border: solid 1px #ebeff3;
+    border-radius: 3px;
+    margin: 0 5px 20px 5px;
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+    min-width: 250px;
+
+    .header {
+      background-color: #ebeff3;
+      height: 45px;
+
+      span {
+        padding-left: 10px;
+        font-weight: 800;
+        display: flex;
+        justify-content: center;
+        align-self: center;
+        color: #039be5;
+        font-size: large;
+      }
+    }
+  }
+}
+.course {
+  padding: 16px;
+
+  &:hover {
+
+    .course-content {
+      border: none;
+      @include mat-elevation(12);
+    }
+  }
+
+  .course-content {
+    min-height: 30px;
+    border-radius: 25px;
+    overflow: hidden;
+    transition: box-shadow 200ms ease-in-out;
+    @include mat-elevation(1);
+
+    .header {
+      padding: 12px 24px;
+      height: 34px !important;
+      min-height: 54px !important;
+      max-height: 64px !important;
+      color: #fff;
+
+      &.android-bg {
+        //background: mat-color($mat-green, 500);
+        background-color: #3ad840;
+      }
+
+
+      .category {
+        text-transform: capitalize;
+        text-align: left;
+        font-weight: 600;
+      }
+
+      .length {
+
+        .length-icon {
+          margin-right: 8px;
+        }
+
+        .min {
+          font-size: 16px;
+        }
+      }
+    }
+
+    .content {
+      padding: 24px;
+
+      .h1 {
+        font-size: 16px;
+        text-align: center;
+      }
+
+      .updated {
+        font-size: 13px;
+        font-weight: 600;
+        margin-top: 4px;
+      }
+    }
+  }
+}
+
+.file-uploader{
+    align-self:center;
+}
+
+.percentage-field {
+  height: 30px;
+  border-radius: 3px;
+  border: solid 1px #c3c0c0;
+  width:100%;
+}
+
+.percentage-field:focus {
+  border: solid 1px #898989;
+  margin: 3px;
+}
+.percentage-label {
+  margin-bottom: 5px;
+  padding-left: 10px;
+  font-size: large;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  color: #8a8787;
+}
+
+.selection-fix{
+    min-width:200px;
+}
+
+.textbox-max-width{
+    max-width:300px;
+   
+    padding-top:5px;
+}
+
+
+.Address-clear{
+    margin-bottom:25px;
+    margin-left:20px;
+
+}
+
+.uploaded-file-name{
+    align-self:center;
+    color:#0da038;
+    font-weight:700;
+}
+
+
+
+.upload {
+  font-weight: bold;
+  color: #28a745;
+  margin-left: 15px;
+  line-height: 36px;
+}
+
+
+.file-name-label {
+  padding: 10px 5px;
+  color: #979a96;
+  font-weight: 700;
+}
+.file-name-label  span{
+  padding-top: 3px;
+  display:inline-block;
+}
+
+.file-name-label img {
+margin-left:10px;
+cursor:pointer;
+}
+
+.button-yellow {
+  background-color: #efd209fa !important;
+  color: #fff !important;
+}
+
+.search_button {
+  margin: 8px 0 8px 10px;
+}
+
+.search-textbox {
+  margin: 0 3px;
+}
+
+
+.stepper-button {
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12) ;
+  background-color: #039be5 !important;
+  color: white !important;
+}
+
+::ng-deep .mat-horizontal-stepper-header {
+  pointer-events: none !important;
+}
+
+.active {
+  background: mat-color($mat-green, 500) !important;
+}
+
+.pan-upload{
+    display:inline-block;
+    cursor:pointer;
+}
+.pan-upload:hover {
+  background-color: #dfdee4a6;
+}
+
+.pan-name-label {
+  margin-left: 10px;
+  color:#28a745;
+  font-size:large;
+  font-weight:900;
+}
+
+.delete-button {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.header-customeer-info {
+  padding-left: 10px;
+  color: #5cfb0b;
+  font-weight:900;
+}
+
+.mat-form-field-infix {
+    width:100% !important;
+}
+
+.count-lable {
+  color: #039be5;
+  font-weight: 800;
+  margin-top: 10px;
+  display: inline-block;
+}

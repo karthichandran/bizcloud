@@ -1,0 +1,63 @@
+
+.bill-label {
+  color: #1357d4;
+  font-weight: 900;
+}
+.search_button {
+  margin: 8px 15px;
+}
+
+.search-textbox {
+  margin: 0 3px;
+}
+
+.row-panel-header {
+  height: 45px;
+  justify-content: center;
+  /*border-bottom: 1px solid #6aa9f77a;*/
+  border-bottom: 1px solid #b5b7b97a;
+}
+
+.row-panel-header > span {
+  align-self: center;
+  color: #039be5;
+}
+
+.row-panel-cell {
+    display:flex;
+  justify-content: center;
+}
+.row-panel-cell > span {
+  align-self: center;
+  color: #505152cf;
+}
+
+.client-panel {
+  padding-bottom: 10px;
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  // background-color: rgba(206, 227, 243, 0.42);
+  /*background: rgb(239,243,245);
+background: linear-gradient(0deg, rgba(239,243,245,1) 0%, rgba(192,193,194,1) 100%);*/
+  /*background: rgb(239,243,245);
+  background: linear-gradient(0deg, rgba(239,243,245,1) 0%, rgba(222,224,226,1) 100%);*/
+  background: rgb(255,255,255);
+  background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(234,235,236,1) 100%);
+}
+.header-customeer-info {
+  padding-left: 10px;
+  color: #5cfb0b;
+  font-weight: 900;
+}
+
+/*.custom-border > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-outline {
+  color: #f375a0 !important;
+}
+
+.custom-border .mat-form-field-outline .mat-form-field-outline-thick {
+  color: #f375a0 !important;
+}*/
+
+.import-btn {
+  background-color: #0cd214  !important;
+  color:#fff !important;
+}

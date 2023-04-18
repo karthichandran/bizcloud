@@ -1,0 +1,224 @@
+<div id="user" class="page-layout carded fullwidth inner-scroll">
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg accent"></div>
+  <!-- / TOP BACKGROUND -->
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header accent"
+         fxLayout="row" fxLayoutAlign="space-between center">
+
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+
+        <!--<button mat-icon-button class="mr-16" [routerLink]="'/apps/e-commerce/orders'">
+          <mat-icon>arrow_back</mat-icon>
+        </button>-->
+
+        <div fxLayout="column" fxLayoutAlign="start start"
+             [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          <div class="h2">
+            User 
+          </div>
+
+        </div>
+      </div>
+      <!-- / APP TITLE -->
+
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT CARD -->
+    <div class="content-card">
+
+      <!-- CONTENT -->
+      <div class="content">
+
+        <mat-tab-group fxLayout="column" fxFlex (selectedTabChange)="tabChanged($event)">
+
+          <mat-tab label="User" #tab1>
+
+            <div class="order-details tab-content p-24" fusePerfectScrollbar>
+
+              <div class="section pb-48">
+
+                <!-- REACTIVE FORM EXAMPLE -->
+
+                <form class="mat-card mat-elevation-z4 p-24 mr-24" fxLayout="column"
+                      name="form" [formGroup]="form">
+
+                  <div class="h2 mb-24">User Creation</div>
+
+                  <div fxLayout="row wrap">
+                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                      <mat-label>Staff Name</mat-label>
+                      <input matInput formControlName="userName" required>
+                      <mat-error>Staff name is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                      <mat-label>Employee Id</mat-label>
+                      <input matInput formControlName="code" required>
+                      <mat-error>Employee Id is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                      <mat-label>Email</mat-label>
+                      <input type="email" matInput formControlName="email" required>
+                      <mat-error>Email is required!</mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxLayout="row wrap">
+                    <div fxLayout="row" fxFlex class="padding-left-right-3">
+                      <div fxFlex="1 0 auto" fxLayout="row" class="mobile" >
+                        <mat-form-field appearance="outline" fxFlex="20" style="padding-right:0px;margin-right:0px;">
+                          <mat-label>ISD</mat-label>
+                          <input matInput maxlength="4" formControlName="isd" >
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="80" style="padding-left:0px;margin-left:0px;">
+                          <mat-label>Mobile</mat-label>
+                          <input matInput type="number" maxlength="10" formControlName="mobileNo" required>
+                          <mat-error>Mobile is required!</mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                      <mat-label>Gender</mat-label>
+                      <mat-select formControlName="genderID" required>
+                        <mat-option *ngFor="let option of genderDDl" [value]="option.id">
+                          {{option.description}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error>Gender is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline"  fxFlex class="padding-left-right-3">
+                      <mat-label>D.O.B</mat-label>
+                      <input matInput [matDatepicker]="birthDatePicker" formControlName="dateOfBirth">
+                      <mat-datepicker-toggle matSuffix [for]="birthDatePicker"></mat-datepicker-toggle>
+                      <mat-datepicker #birthDatePicker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxLayout="row wrap">
+                    <mat-form-field appearance="outline"  fxFlex class="padding-left-right-3">
+                      <mat-label>Start Date</mat-label>
+                      <input matInput [matDatepicker]="startDatePicker" formControlName="fromDate">
+                      <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                      <mat-datepicker #startDatePicker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline"  fxFlex class="padding-left-right-3">
+                      <mat-label>To Date</mat-label>
+                      <input matInput [matDatepicker]="toDatePicker" formControlName="toDate">
+                      <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+                      <mat-datepicker #toDatePicker></mat-datepicker>
+                    </mat-form-field>
+                    <div fxFlex class="padding-left-right-3">
+                      <mat-checkbox class="checkbox" formControlName="isActive" fxFlex>
+                        Active
+                      </mat-checkbox>
+                      <mat-checkbox class="checkbox" formControlName="isAgent" fxFlex>
+                        Is Agent
+                      </mat-checkbox>
+                      <mat-checkbox class="checkbox" formControlName="isAdmin" fxFlex>
+                        Is Admin
+                      </mat-checkbox>
+                    </div>
+                    <!--<mat-form-field appearance="outline"  class=" pr-4" fxFlex>
+      <mat-label>Role</mat-label>
+      <mat-select formControlName="roleId" required>
+        <mat-option *ngFor="let option of reportingToDDL" [value]="option.id">
+          {{option.description}}
+        </mat-option>
+      </mat-select>
+      <mat-error>Role To is required!</mat-error>
+    </mat-form-field>-->
+
+                  </div>
+                  <div fxLayout="row wrap">
+                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                      <mat-label>Login Name</mat-label>
+                      <input matInput formControlName="loginName" required>
+                      <mat-error>Login name is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                      <mat-label>Password</mat-label>
+                      <input matInput formControlName="userPassword" required>
+                      <mat-error>Password is required!</mat-error>
+                    </mat-form-field>                   
+                  </div>
+                  <div fxLayout="row wrap">
+                    <grid [dataSet]="roleRowData" [gridColDef]="roleColumnDef" style="width:100%"></grid>
+                  </div>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                      <button class="mr-8" mat-raised-button type="submit" (click)="save()" color="accent">
+                        Save
+                      </button>
+                      <button mat-raised-button type="button" color="basic" (click)="clear()">
+                        Clear
+                      </button>
+                    </div>
+
+                </form>
+
+              </div>
+
+            </div>
+          </mat-tab>
+
+          <mat-tab label="User List">
+            <div class="products tab-content p-24 " fusePerfectScrollbar>
+              <!--<div fxLayout="column" fxLayoutAlign="center end">
+    <button mat-raised-button
+            class="add-product-button  mt-24 mt-md-0 mr-24 pink" (click)="download()">
+
+      <span >Upload.XLS </span>
+      <mat-icon class="s-22" style="margin-left:5px">cloud_upload</mat-icon>
+    </button>
+  </div>-->
+
+              <div fxLayout="row wrap">
+                <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                  <mat-label>User Name</mat-label>
+                  <input matInput [(ngModel)]="userNameFilter">
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                  <mat-label>Employee ID</mat-label>
+                  <input matInput [(ngModel)]="codeFilter">
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                  <mat-label>Is Active</mat-label>
+                  <mat-select [(ngModel)]="isActiveFilter">
+                    <mat-option *ngFor="let option of isActiveDDl" [value]="option.id">
+                      {{option.description}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="center center" >
+                <button class="mr-8" mat-raised-button type="submit" (click)="search()" color="accent">
+                  Search
+                </button>
+                <button mat-raised-button type="button" color="basic" (click)="clearFilter()">
+                  Clear
+                </button>
+              </div>
+              <div class="padding-top-bottom-10">
+                <grid [dataSet]="rowData" [gridColDef]="columnDef" (editRow)="selectedRows($event)"></grid>
+              </div>
+            </div>
+          </mat-tab>
+
+        </mat-tab-group>
+
+      </div>
+      <!-- / CONTENT -->
+
+    </div>
+    <!-- / CONTENT CARD -->
+
+  </div>
+  <!-- / CENTER -->
+</div>
+
+
+

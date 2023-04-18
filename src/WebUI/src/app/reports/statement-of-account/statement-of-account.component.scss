@@ -1,0 +1,41 @@
+.summary-cell{
+    height:40px;
+    padding-top:10px;
+    padding-left:5px;
+}
+
+.summary-header-row {
+  background-color: #BFA3FA;
+}
+
+.summary-odd-row {
+  background-color: #f2f4f7;
+}
+.summary-even-row {
+  background-color: #E7D3F5;
+}
+
+.summary-container {
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+
+.color-indiacator {
+  border-radius: 25px;
+  margin: 0 5px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight:600;
+  color: #6d6767;
+}
+
+.border-yellow {
+  border: 1px solid #F7E100;
+}
+.border-lightsalmon {
+  border: 1px solid #DB8746;
+}
+.border-green {
+  border: 1px solid #00C50B;
+}

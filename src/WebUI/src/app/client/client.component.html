@@ -1,0 +1,735 @@
+<div id="user" class="page-layout carded fullwidth inner-scroll">
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg accent"></div>
+  <!-- / TOP BACKGROUND -->
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header accent"
+         fxLayout="row" fxLayoutAlign="space-between center">
+
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+
+        <!--<button mat-icon-button class="mr-16" [routerLink]="'/apps/e-commerce/orders'">
+          <mat-icon>arrow_back</mat-icon>
+        </button>-->
+
+        <div fxLayout="column" fxLayoutAlign="start start"
+             [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          <div class="h2">
+            Customer
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start start" style="padding-left:50px;">
+          <div class="header-customeer-info">{{activeCustomer}}</div>
+          <div class="header-customeer-info">{{activePremises}}</div>
+          <div class="header-customeer-info">{{activeUnit}}</div>
+        </div>
+      </div>
+      <!-- / APP TITLE -->
+
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT CARD -->
+    <div class="content-card">
+      <mat-tab-group fxLayout="column" fxFlex (selectedTabChange)="tabChanged($event)" style="height:100%;">
+
+        <mat-tab label="Manage Customer" #tab1>
+          <div fusePerfectScrollbar>
+            <!-- VERTICAL STEPPER EXAMPLE -->
+            <mat-horizontal-stepper class="mat-elevation-z4" [linear]="true" #stepper (selectionChange)="selectedstepperIndex($event)">
+
+              <mat-step [stepControl]="customerform">
+
+                <form fxLayout="column" [formGroup]="customerform">
+
+                  <ng-template matStepLabel>Customer Details</ng-template>
+
+
+                  <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-10">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Name (As in PAN)</mat-label>
+                      <input matInput formControlName="name" required>
+                      <mat-error>Name is required!</mat-error>
+                    </mat-form-field>
+
+                    <div fxFlex>
+                      <mat-form-field appearance="outline" style="width:98%;">
+                        <mat-label>PAN</mat-label>
+                        <input matInput formControlName="pan" (keyup)="customerform.patchValue({pan: $event.target.value.toUpperCase()})" (blur)="loadCustomerByPan($event.target.value)" required>
+
+                        <input hidden type="file" #panDocument accept="image/*" (change)="uploadPan($event)" />
+                        <span matSuffix class="pan-upload" (click)="panUploadClick(panDocument)">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="rgb(3,155,229)" /></svg>
+                        </span>
+                        <!--<span matSuffix class="pan-upload" (click)="panDocument.click()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="rgb(3,155,229)" /></svg>
+        </span>-->
+                        <mat-error>Valid PAN is required!</mat-error>
+                      </mat-form-field><br />
+                      <div *ngIf="panDoc.fileName" class="padding-bottom-10">
+                        <span class="pan-name-label">{{panDoc.fileName}}</span>
+                        <img src="assets/images/logos/icons8-view-24.png" (click)="downloadFile(panDoc.blobID,panDoc.fileName,'view')" />
+                        <img src="assets/images/logos/icon-down-24.png" (click)="downloadFile(panDoc.blobID,panDoc.fileName,'download')" />
+                        <mat-icon class="active-icon red-600 s-25 delete-button" (click)="deleteFile(panDoc.blobID,'pan')">highlight_off</mat-icon>
+                      </div>
+                    </div>
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Name of the premises/Building/village</mat-label>
+                      <input matInput formControlName="addressPremises">
+                      <!--<mat-error>promises/Building/village is required!</mat-error>-->
+                    </mat-form-field>
+                    <div fxFlex fxLayoutAlign="first center" *ngIf="showAddressClearBtn">
+                      <button mat-raised-button type="button" class="Address-clear" (click)="clearAddress()" color="accent">
+                        Clear Address
+                      </button>
+                    </div>
+                  </div>
+
+                  <div fxFlex="1 0 auto" fxLayout="row wrap">
+
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Flat/Door/Block No</mat-label>
+                      <input matInput formControlName="adressLine1">
+                      <!--<mat-error>Flat/Door/Block No is required!</mat-error>-->
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Road/Street/Lane</mat-label>
+                      <input matInput formControlName="addressLine2">
+                      <!--<mat-error>Road/Street/Lane is required!</mat-error>-->
+                    </mat-form-field>
+
+                  </div>
+
+                  <div fxFlex="1 0 auto" fxLayout="row wrap">
+
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>City/District </mat-label>
+                      <input matInput formControlName="city" >
+                      <!-- <mat-error>City/District is required!</mat-error> -->
+                    </mat-form-field>
+
+                    <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                      <mat-label>State</mat-label>
+                      <mat-select formControlName="stateId"  (selectionChange)="selectedState($event)">
+                        <mat-option *ngFor="let option of states" [value]="option.stateID">
+                          {{option.state}}
+                        </mat-option>
+                      </mat-select>
+                      <!-- <mat-error>State is required!</mat-error> -->
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>PIN Code</mat-label>
+                      <input matInput type="text" formControlName="pinCode" >
+                      <!-- <mat-error>PIN Code is required!</mat-error> -->
+                    </mat-form-field>
+
+                  </div>
+                  <div fxFlex="1 0 auto" fxLayout="row wrap">
+                    <div fxFlex fxLayout="row" style="width:100%">
+                      <mat-form-field appearance="outline" fxFlex="20" style="padding-right:0px;margin-right:0px;">
+                        <mat-label>ISD</mat-label>
+                        <input matInput maxlength="4" formControlName="isd" [(ngModel)]="isd2way" placeholder="ISD">
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex="80" style="padding-left:0px;margin-left:0px;">
+                        <mat-label>Mobile</mat-label>
+                        <input matInput type="number" maxlength="10" formControlName="mobileNo" required>
+                        <mat-error>Mobile is required!</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex fxLayout="row" style="width:100%">
+                      <mat-form-field appearance="outline" fxFlex="20" style="padding-right:0px;margin-right:0px;">
+                        <mat-label>ISD</mat-label>
+                        <input matInput maxlength="4" formControlName="isd" [(ngModel)]="isd2way">
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex="80" style="padding-left:0px;margin-left:0px;">
+                        <mat-label>Alternate number</mat-label>
+                        <input matInput name="alternateNo" type="number" maxlength="10" formControlName="alternateNumber">
+                      </mat-form-field>
+
+                    </div>
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>D.O.B </mat-label>
+                      <input matInput [matDatepicker]="birthDate" formControlName="dateOfBirth" placeholder="DD-MMM-YYYY">
+                      <mat-datepicker-toggle matSuffix [for]="birthDate"></mat-datepicker-toggle>
+                      <mat-datepicker #birthDate></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column">
+                    <div fxFlex>
+                      <div class="margin-tb-5">
+                        <label class="radio-label">I/We want REpro Services to download Form 16B</label>
+                        <mat-radio-group aria-label="Select an option" formControlName="form16b" style="align-self:center;">
+                          <mat-radio-button value="yes">Yes</mat-radio-button>
+                          <mat-radio-button value="no">No</mat-radio-button>
+                        </mat-radio-group>
+                      </div>
+                    </div>
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Email</mat-label>
+                      <input type="email" matInput formControlName="emailID" required>
+                      <mat-error>Email is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Income Tax Login Password</mat-label>
+                      <input type="text" matInput formControlName="incomeTaxPassword"  maxlength="50">                      
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column">
+                    <div fxFlex>
+                      <div fxLayout="row wrap">
+                        <div class="margin-tb-5" fxLayout.sm="column" fxLayout.xs="column">
+                          <label class="radio-label">I/We have already registered in TRACES</label>
+                          <mat-radio-group aria-label="Select an option" formControlName="traces" style="align-self:end;">
+                            <mat-radio-button value="yes" (click)="UpdateOnlyTDS()">Yes</mat-radio-button>
+                            <mat-radio-button value="no">No</mat-radio-button>
+                          </mat-radio-group>
+                          <mat-form-field appearance="outline" fxFlex *ngIf="customerform.value.traces=='yes'">
+                            <mat-label>Password</mat-label>
+                            <input matInput formControlName="tracesPassword">
+                            <mat-error>Password is required!</mat-error>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                   
+                  </div>
+                  <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column">
+                    <div fxFlex>
+                      <div fxLayout="row wrap">
+                        <!--<div class="margin-tb-5" fxLayout.sm="column" fxLayout.xs="column">
+    <label class="radio-label">Is PAN verified</label>
+    <mat-radio-group aria-label="Select an option" formControlName="isPanValid" style="align-self:end;" required>
+      <mat-radio-button value="yes">Yes</mat-radio-button>
+      <mat-radio-button value="no">No</mat-radio-button>
+    </mat-radio-group>
+  </div>-->
+                        <mat-checkbox formControlName="isPanVerified">  Is PAN Verified</mat-checkbox>
+                        <div style="margin-left:20px;">
+                          <mat-checkbox formControlName="onlyTDS"  (change)="UpdateTraces($event.checked)">  Only TDS Payment</mat-checkbox>
+                        </div>
+                      </div>
+                    </div>
+                    <div fxFlex fxLayoutAlign="end center">
+                      <button mat-raised-button
+                              class="add-product-button  mt-24 mt-md-0 pink mb-10" style="float:right;" (click)="addCoClient()">
+                        <span>Add Co Owner </span>
+                        <mat-icon class="s-22" style="margin-left:5px">group</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div fxLayout="column" fxLayoutAlign="center end">
+
+                    <!--<div fxFlex="1 0 auto" class="margin-tb-5" fxLayout="row">
+      <label class="radio-label">I/We have already registered in TRACES</label>
+      <mat-radio-group aria-label="Select an option" formControlName="traces" style="align-self:center;">
+        <mat-radio-button value="yes">Yes</mat-radio-button>
+        <mat-radio-button value="no">No</mat-radio-button>
+      </mat-radio-group>
+      <mat-form-field appearance="outline" fxFlex *ngIf="customerform.value.traces=='yes'">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="tracesPassword">
+        <mat-error>Password is required!</mat-error>
+      </mat-form-field>
+    </div>-->
+                    <!--<button mat-fab
+            color="warn"
+            class="add-file-button"
+            (click)="addCoClient()"
+            aria-label="Add file"
+            [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
+      <mat-icon>add</mat-icon>
+    </button>-->
+
+                  </div>
+                  <div id="academy-courses" class="sellers" *ngIf="clients.length>0" fxLayout="column" fxLayoutAlign="center">
+                    <div fxLayout="row wrap" class="header" fxLayoutAlign="start">
+                      <span>Customers</span>
+                    </div>
+                    <div class="courses" fxLayout="row wrap" fxLayoutAlign="start" [@animateStagger]="{value:'50'}">
+                      <div class="course android" *ngFor="let client of clients" (click)="showClient($event,client)" fxFlex="100" fxFlex.gt-xs="50"
+                           fxFlex.gt-sm="25" [@animate]="{value:'*',params:{y:'100%'}}">
+                        <div class="course-content" fxLayout="column" fxFlex="1 1 auto">
+                          <div class="header android-bg" [ngClass]="{'active':currentClientId==client.customerID}" fxLayout="row" fxLayoutAlign="center center">
+                            <div class="category" fxFlex>
+                              {{client.name}}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div fxLayout="row" fxLayoutAlign="center center">
+                    <button mat-raised-button type="button" class="mr-16" (click)="saveCustomer()" color="accent">
+                      Save
+                    </button>
+                    <div class="stepper-button  mat-raised-button" (click)="NavigateToProperty(stepper)" color="accent">
+                      Next
+                    </div>
+                    <!--<button mat-raised-button matStepperNext type="button" color="accent">
+      Next
+    </button>-->
+                    <button mat-raised-button type="button" class="ml-16" (click)="clear()" color="basic">
+                      Clear
+                    </button>
+                    <button mat-raised-button type="button" class="ml-16" *ngIf="customerform.value.customerID>0" (click)="deleteCustomer(customerform.value.customerID)" color="warn">
+                      delete
+                    </button>
+                    <!--<button mat-raised-button type="button" class="ml-16" (click)="openDialog()" color="basic">
+    dialog
+    </button>-->
+                  </div>
+
+                </form>
+
+              </mat-step>
+
+              <mat-step [stepControl]="propertyForm">
+
+                <form fxLayout="column" [formGroup]="propertyForm">
+
+                  <ng-template matStepLabel>Property Details</ng-template>
+
+                  <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-10">
+                    <div *ngIf="showActiveProperty" fxFlex>
+                      <!-- <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                        <mat-label>Name of the premises/Building/village</mat-label>
+                        <mat-select formControlName="propertyId" required (selectionChange)="selectedProperty($event.value)">
+                          <mat-option *ngFor="let option of activeProperty" [value]="option.propertyID">
+                            {{option.addressPremises}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error>promises/Building/village is required!</mat-error>
+                      </mat-form-field> -->
+                      <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                        <mat-label>Name of the premises/Building/village</mat-label>
+                        <mat-select formControlName="propertyId" required #PropertyFilterSelect>
+                          <mat-option>
+                            <ngx-mat-select-search [formControl]="propertyFilterCtrl"  placeholderLabel="Search"></ngx-mat-select-search>
+                          </mat-option>
+                          <mat-option *ngFor="let option of filteredProperty| async" [value]="option.propertyID">
+                            {{option.addressPremises}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error>promises/Building/village is required!</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div *ngIf="!showActiveProperty" fxFlex>
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Name of the premises/Building/village</mat-label>
+                        <input matInput formControlName="addressLine1" disabled [(ngModel)]="inActiveProperty">
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div fxFlex="1 0 auto" fxLayout="row wrap">
+
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Flat/Door/Block No</mat-label>
+                      <input matInput formControlName="addressLine1" required>
+                      <mat-error>Flat/Door/Block No is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Road/Street/Lane</mat-label>
+                      <input matInput formControlName="addressLine2" required>
+                      <mat-error>Road/Street/Lane is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>City/District </mat-label>
+                      <input matInput formControlName="city" required>
+                      <mat-error>City/District is required!</mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="1 0 auto" fxLayout="row wrap">
+
+                    <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                      <mat-label>State</mat-label>
+                      <mat-select formControlName="stateID" required>
+                        <mat-option *ngFor="let option of states" [value]="option.stateID">
+                          {{option.state}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error>State is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>PIN Code</mat-label>
+                      <input matInput formControlName="pinCode" required>
+                      <mat-error>PIN Code is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Unit No</mat-label>
+                      <input matInput formControlName="unitNo" type="number" required>
+                      <mat-error>Unit No is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Sellers</mat-label>
+                      <input matInput formControlName="sellers" >
+                    </mat-form-field>                   
+                  </div>
+
+                  <div fxFlex="1 0 auto" fxLayout="row wrap">
+                    <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                      <mat-label>Payment Type</mat-label>
+                      <mat-select formControlName="paymentMethodId" required>
+                        <mat-option *ngFor="let option of paymentMethods" [value]="option.paymentMethodID">
+                          {{option.paymentMethod}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error>Payment Type is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                      <mat-label>GST Rate</mat-label>
+                      <mat-select formControlName="gstRateID" required>
+                        <mat-option *ngFor="let option of gstCode" [value]="option.taxCodeId">
+                          {{option.taxName}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error>GST Rate is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                      <mat-label>TDS Rate</mat-label>
+                      <mat-select formControlName="tdsRateID" required>
+                        <mat-option *ngFor="let option of tdsCode" [value]="option.taxCodeId">
+                          {{option.taxName}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error>TDS Rate is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Total Unit Cost( Excl GST)</mat-label>
+                      <input matInput type="number" formControlName="totalUnitCost">
+                      <!--<mat-error>Total Unit Cost is required!</mat-error>-->
+                    </mat-form-field>
+
+                  </div>
+
+                  <div fxFlex="1 0 auto" fxLayout="row wrap">
+                    <mat-form-field class="padding-right-5" appearance="outline" fxFlex>
+                      <mat-label>Date Of Booking/Agreement</mat-label>
+                      <input matInput [matDatepicker]="agreementDate" formControlName="dateOfAgreement">
+                      <mat-datepicker-toggle matSuffix [for]="agreementDate"></mat-datepicker-toggle>
+                      <mat-datepicker #agreementDate></mat-datepicker>
+                      <!--<mat-error>agreement Date is required!</mat-error>-->
+                    </mat-form-field>
+                    <div fxFlex="25">
+                      <label class="radio-label">TDS collected by seller</label>
+                      <mat-radio-group aria-label="Select an option" style="align-self:center;" formControlName="tdsCollected">
+                        <mat-radio-button value="yes">Yes</mat-radio-button>
+                        <mat-radio-button value="no">No</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                    <div fxFlex></div>
+                    <div fxFlex>
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Stamp duty</mat-label>
+                        <input matInput type="number" formControlName="stampDuty">
+                        <!--<mat-error>Total Unit Cost is required!</mat-error>-->
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <!--Should be removed-->
+                  <!--<div fxFlex="1 1 auto" fxLayout="row wrap" >
+                    <div class="sellers" fxFlex>
+                      <div fxLayout="row wrap" class="header" fxLayoutAlign="start">
+                        <span>Co seller's shares in %</span>
+                      </div>
+                      <div fxLayout="column"  style="padding:5px 0;" [@animateStagger]="{value:'50'}">
+                        <grid [dataSet]="sellerData" [gridColDef]="sellerColumnDef" (selectedRows)="selectedRows($event)"></grid>
+                      </div>
+                    </div>
+                  </div>-->
+
+                  <div fxLayout="row" fxLayoutAlign="center center">
+                    <button class="mr-8" mat-raised-button matStepperPrevious type="button" color="accent">
+                      Previous
+                    </button>
+                    <button mat-raised-button type="button" class="mr-16" (click)="saveProperty('property')" color="accent">
+                      Save
+                    </button>
+                    <div class="stepper-button  mat-raised-button" (click)="NavigateToShare(stepper)" color="accent">
+                      Next
+                    </div>
+
+                  </div>
+
+                </form>
+
+              </mat-step>
+
+              <mat-step>
+                <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-10">
+                  <mat-form-field appearance="outline" fxFlex class="textbox-max-width">
+                    <mat-label>Declaration Date</mat-label>
+                    <input matInput [matDatepicker]="declarationDate" [formControl]="declaration" required>
+                    <mat-datepicker-toggle matSuffix [for]="declarationDate"></mat-datepicker-toggle>
+                    <mat-datepicker #declarationDate></mat-datepicker>
+                    <mat-error>Declaration Date is required!</mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" fxFlex style="padding-top:5px;">
+                    <mat-label>Owner Alias </mat-label>
+                    <input matInput [formControl]="customerAlias">
+                  </mat-form-field>
+                </div>
+
+                <ng-template matStepLabel>Share details</ng-template>
+
+                <div fxFlex="1 1 auto" fxLayout="row wrap">
+                  <div class="sellers" fxFlex>
+                    <div fxLayout="row wrap" class="header" fxLayoutAlign="start">
+                      <span>Co customers's shares in %</span>
+                    </div>
+                    <div fxLayout="column" style="padding:5px 0;" [@animateStagger]="{value:'50'}">
+
+                      <grid [dataSet]="customerData" [gridColDef]="customerColumnDef"></grid>
+                    </div>
+                  </div>
+                </div>
+
+                <div fxLayout="row wrap">
+                  <div fxLayout="column" fxFlex>
+                    <div fxFlex="1 0 auto" fxLayout="row wrap">
+                      <div fxFlex="1 0 auto" class="margin-tb-5" fxLayout="row">
+                        <label class="radio-label" style="min-width:135px;">Declaration Form</label>
+                        <div class="file-uploader">
+                          <input hidden type="file" #declarationForm accept=".ods,.doc,.docx,.xls,.xlsx,application/pdf,image/*" (change)="uploadFile($event,'declaration')" />
+                          <button mat-button
+                                  color="accent"
+                                  class=""
+                                  (click)="declarationForm.click()"
+                                  aria-label="Add file"
+                                  [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="rgb(3,155,229)" /></svg>
+                            <span> Upload File</span>
+                          </button>
+                        </div>
+                        <!--<span class="uploaded-file-name"> {{declarationFileName}}</span>
+                        <span class="upload" *ngIf="progress > 0">
+                          {{progress}}%
+                        </span>-->
+
+                      </div>
+                    </div>
+                    <div fxFlex="1 0 auto" fxLayout="row wrap">
+                      <div fxFlex="1 0 auto" class="margin-tb-5" fxLayout="row">
+                        <label class="radio-label" style="min-width:135px;">Statement of account</label>
+                        <div class="file-uploader">
+                          <input hidden type="file" #accountStatement accept=".ods,.doc,.docx,.xls,.xlsx,application/pdf,image/*" (change)="uploadFile($event,'statement')" />
+                          <button mat-button
+                                  color="accent"
+                                  class=""
+                                  (click)="accountStatement.click()"
+                                  aria-label="Add file"
+                                  [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="rgb(3,155,229)" /></svg>
+                            <span> Upload File</span>
+                          </button>
+                        </div>
+                        <!--<span class="uploaded-file-name"> {{statementFileName}}</span>
+                        <span class="upload" *ngIf="progress > 0">
+                          {{progress}}%
+                        </span>-->
+                      </div>
+                    </div>
+                    <div fxFlex="1 0 auto" fxLayout="row wrap">
+                      <div fxFlex="1 0 auto" class="margin-tb-5" fxLayout="row">
+                        <label class="radio-label" style="min-width:135px;">Cost Break-up</label>
+                        <div class="file-uploader">
+                          <input hidden type="file" #costBreakup accept=".ods,.doc,.docx,.xls,.xlsx,application/pdf,image/*" (change)="uploadFile($event,'cost')" />
+                          <button mat-button
+                                  color="accent"
+                                  class=""
+                                  (click)="costBreakup.click()"
+                                  aria-label="Add file"
+                                  [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="rgb(3,155,229)" /></svg>
+                            <span> Upload File</span>
+                          </button>
+                        </div>
+                        <!--<span class="uploaded-file-name"> {{costFileName}}</span>
+                        <span class="upload" *ngIf="progress > 0">
+                          {{progress}}%
+                        </span>-->
+                      </div>
+                    </div>
+                    <div fxFlex="1 0 auto" fxLayout="row wrap">
+                      <div fxFlex="1 0 auto" class="margin-tb-5" fxLayout="row">
+                        <label class="radio-label" style="min-width:135px;">Other Documents</label>
+                        <div class="file-uploader">
+                          <input hidden type="file" #other accept=".ods,.doc,.docx,.xls,.xlsx,application/pdf,image/*" (change)="uploadFile($event,'other')" />
+                          <button mat-button
+                                  color="accent"
+                                  class=""
+                                  (click)="other.click()"
+                                  aria-label="Add file"
+                                  [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="rgb(3,155,229)" /></svg>
+                            <span> Upload File</span>
+                          </button>
+                        </div>
+                        <!--<span class="uploaded-file-name"> {{otherFileName}}</span>
+                        <span class="upload" *ngIf="progress > 0">
+                          {{progress}}%
+                        </span>-->
+                      </div>
+                    </div>
+                  </div>
+                  <div fxLayout="column" fxFlex>
+                    <!--Uploaded label should be here-->
+                    <div class="sellers" fxFlex>
+                      <div fxLayout="row wrap" class="header" fxLayoutAlign="start">
+                        <span>Uploaded Documents</span>
+                      </div>
+                      <div fxLayout="column" style="padding:5px 0;" [@animateStagger]="{value:'50'}">
+                        <div *ngFor="let file of filesNameList" class="file-name-label">
+                          <span> {{file.fileName}}</span> <img src="assets/images/logos/icons8-view-24.png" (click)="downloadFile(file.blobID,file.fileName,'view')" />
+                          <img src="assets/images/logos/icon-down-24.png" (click)="downloadFile(file.blobID,file.fileName,'download')" />
+                          <mat-icon class="active-icon red-600 s-25 delete-button" (click)="deleteFile(file.blobID,'files')">highlight_off</mat-icon>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="center center">
+                  <button class="mr-8" mat-raised-button matStepperPrevious type="button" color="accent">
+                    Previous
+                  </button>
+                  <button mat-raised-button type="button" color="accent" (click)="submitCustomer()">
+                    Finish
+                  </button>
+                </div>
+
+              </mat-step>
+
+            </mat-horizontal-stepper>
+            <!-- / VERTICAL STEPPER EXAMPLE -->
+          </div>
+        </mat-tab>
+        <mat-tab label="Customer List">
+          <div class="products tab-content p-24 " fusePerfectScrollbar>
+
+            <div fxLayout="column ">
+              <form name="searchForm">
+                <div fxLayout="row wrap ">
+                  <div fxFlex>
+                    <mat-form-field appearance="outline" fxFlex class="search-textbox">
+                      <mat-label>Customer Name</mat-label>
+                      <input matInput name="searchByCustomerName" [(ngModel)]="searchByCustomerName">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex>
+                    <mat-form-field appearance="outline" fxFlex class="search-textbox">
+                      <mat-label>PAN</mat-label>
+                      <input matInput name="searchByPan" [(ngModel)]="searchByPan" (keyup)="  $event.target.value=$event.target.value.toUpperCase()">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex>
+                    <!-- <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                      <mat-label>Property</mat-label>
+                      <mat-select name="searchByPropertyID" [(ngModel)]="searchByPropertyID">
+                        <mat-option *ngFor="let option of propertyDDl" [value]="option.propertyID">
+                          {{option.addressPremises}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field> -->
+                    <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                      <mat-label>Select the project</mat-label>
+                      <mat-select name="searchByPropertyID" [(ngModel)]="searchByPropertyID"   #PropertyFilterSelectForSearch>
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="propertyFilterCtrlForSearch"  placeholderLabel="Search"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let option of filteredPropertyForSearch| async" [value]="option.propertyID">
+                          {{option.addressPremises}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <mat-form-field appearance="outline" fxFlex class="search-textbox">
+                    <mat-label>Unit No</mat-label>
+                    <input matInput name="searchByUnit" [(ngModel)]="searchByUnit" type="number">
+                  </mat-form-field>
+
+                </div>
+
+                <div fxLayout="row wrap">
+                  <div fxFlex>
+                    <mat-form-field appearance="outline" fxFlex class="search-textbox">
+                      <mat-label>Premises</mat-label>
+                      <input matInput name="searchByPremises" [(ngModel)]="searchByPremises">
+                    </mat-form-field>
+                  </div>
+                  <!--<mat-form-field appearance="outline" fxFlex class="search-textbox">
+                    <mat-label>Remarks</mat-label>
+                    <input matInput name="searchByRemark" [(ngModel)]="searchByRemark" type="text">
+                  </mat-form-field>-->
+
+                  <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                    <mat-label>Status Type</mat-label>
+                    <mat-select name="searchByStatusType" [(ngModel)]="searchByStatusType">
+                      <mat-option *ngFor="let option of statusDDl" [value]="option.id">
+                        {{option.description}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <div fxFlex="50" fxLayoutAlign="center center">
+                    <button class="search_button" mat-raised-button type="submit" (click)="search()" color="accent">
+                      Search
+                      <mat-icon class="s-22" style="margin-left:5px">search</mat-icon>
+                    </button>
+                    <button class="search_button " mat-raised-button type="button" color="basic" (click)="reset()">
+                      Reset
+                      <mat-icon class="s-22" style="margin-left:5px">refresh</mat-icon>
+                    </button>
+                    <button class="add-product-button   pink search_button" mat-raised-button (click)="downloadExcel()">
+                      <span>Download </span>
+                      <mat-icon class="s-22" style="margin-left:5px">get_app</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                <!--<div fxLayout="row wrap" fxLayoutAlign="center center"></div>-->
+              </form>
+              <div fxLayout="row wrap">
+                <div fxFlex>
+
+                  <!--{{testDate | dateFormat:'DD-MMM-YYYY'}}-->
+                  <grid-client *ngIf="showListGird" [dataSet]="rowData" (action)="action($event)"></grid-client>
+                </div>
+              </div>
+              <div fxLayout="row wrap">
+                <div fxFlex>
+                  <span class="count-lable"> No of Archived Records : </span> {{countDetails.archived}}<br />
+                  <!--<span class="count-lable"> No of UnArchived Records : </span>  {{countDetails.unArchived}}-->
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </mat-tab>
+
+      </mat-tab-group>
+    </div>
+    <!-- / CONTENT CARD -->
+
+  </div>
+  <!-- / CENTER -->
+</div>
+
+
+

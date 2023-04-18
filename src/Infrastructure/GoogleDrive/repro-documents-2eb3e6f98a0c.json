@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "repro-documents",
+  "private_key_id": "2eb3e6f98a0c23de8965b80b0a4e630fb1359039",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCeIET3FwXljYTC\n2Qd6dFYXHraB97WEQZ/D8/Vb2xc3nteeC2QS6ZWKGqfb7ZNKK/NFAJyQvnBb3e1X\nKvDuwCEgRyluxtLU1/2odk35zdybJxlKaHizaftO44tLY1lqOEFDKzL2fZctKPRQ\nUj7KfBdNzFeKty05SCwg26UyofiFgntD8dcrGeL68EYaYPxSQKZERATUAaXoRlx8\nvWOPWSRyCRb0ctnFKYdZIAAHv+hMmAD5Y/eUglR+XybgemdlzHWygkG98u6cxMKW\nazIN4D3Rh7S7WODOTso2E1AB7Vx1lgAvYrosy1Zq9VFwwcITdiJaGPnJybAkuTig\nhxB9B+nxAgMBAAECggEAIqtOk6JPn6nsns/4zMdvDLimKU7HVI0S22LEu/QIXiCM\ng9FZiq/+In5/qT+omI2UU9+zdCTc+7dnz0HR+3bSjIItumULWrFUozf1Fr0lDjt/\nVwoa1LN67ywCoW/R7fERlgmFrfeRSsx87JNrwvd8IImZ9Ab/elyxmC6wRK6wj4zY\n5bli46uEyJ6Ahen2RtsEIzRY/toKgSzCYoTsd1LnwcZryDqim+jvY2X4ESwOEiRi\n7k/eHK9YZ15kT4saW8L+NmcB63i3dX1BCj1qtzhBVIlRuszl1AT9Xrl3buQSBw8O\nZIAFMopRELOaaFQLEB18AAR/URg+PjWPG5nbngBr8QKBgQDTgyE6VR0cef+RMBtY\n6nSLle0sdLRZQ007LsKtlF/2qPOncdaXXL3xnbD1TASxsew7bQWe6MoA14LpnqYd\n+PIm3s0x/SNnft+TFCavwPkwF/I77vM8MbBaJi/89oql2b8w06U+fzeUvIvG8k2W\nPXUwPyoIsjbH03Xm/BlW+ht2RQKBgQC/YpAAGzs/nYMijFY0M05E3Z1XDyoSD6bG\nIm5kKg4FtHMRNzSASpqq6NvIhqw1MXVlQesjw8yeJWl0pg4w5RHb7HfAH9Sf3BZr\ngTnkME7k4FKIK+8MMj302c0WSPwclgMA92Rxh9nsa//oPmEDDVAi6Zd1ZuYskB8u\noXjESu1FvQKBgAfXrt241jF+HInHnNv5JYUfdAHX+e/tXOm63CEPhVdiAFbPE8Pc\n/nX9ANi3jtz/2eCCNFkmDIdndkUvSr2Fw4TJchZOaoel3qhXcO/HWfX8jVDHlWE/\n/mf5ToI0qgNoRXyL/G6KzQbIzu37ggD2GmhFj0tvQDS8lHySEGZ3M5l5AoGBAJMG\nug+K3AJsFDD3VMY3X/qhsd0O5kgHxBxUmS/T6v/Q99ES8v9X0OhZiXbMlwEqZMCM\nWoMYSVp47UHSy/YeFJE6YWi0S1kf8A1YskuuHP3RozW/Yp6g/l3a8KYdHaksSVR1\nubFKJ01sTqVxPn/ku1qGz3c+vLchZQMiwy8xTISVAoGAMnVWJiYB18W/dhAU6PzW\nZpdeDbwgLGFWhe0JAprLFSdpS7glWZRIsAo/teTfyLbxFSc/GsKaARJwuo1jx60d\noTRRKM66TT226LAGfI/wbd0SM2NH6t3xp8+Uknwc9ayd4Ib/1rSpiEkDMXutwesB\nAo9jSSlW5eGuuHPqnFkSwfM=\n-----END PRIVATE KEY-----\n",
+  "client_email": "repro-service-acct@repro-documents.iam.gserviceaccount.com",
+  "client_id": "105319578318674053191",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/repro-service-acct%40repro-documents.iam.gserviceaccount.com"
+}

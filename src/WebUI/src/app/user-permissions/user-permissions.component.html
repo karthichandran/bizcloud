@@ -1,0 +1,91 @@
+<div id="userrole" class="page-layout carded fullwidth inner-scroll">
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg accent"></div>
+  <!-- / TOP BACKGROUND -->
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header accent"
+         fxLayout="row" fxLayoutAlign="space-between center">
+
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+
+        <!--<button mat-icon-button class="mr-16" [routerLink]="'/apps/e-commerce/orders'">
+          <mat-icon>arrow_back</mat-icon>
+        </button>-->
+
+        <div fxLayout="column" fxLayoutAlign="start start"
+             [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          <div class="h2">
+            User Role Permissions
+          </div>
+
+        </div>
+      </div>
+      <!-- / APP TITLE -->
+
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT CARD -->
+    <div class="content-card">
+
+      <!-- CONTENT -->
+      <div class="content">      
+
+            <div class="order-details tab-content p-24" fusePerfectScrollbar>
+
+              <div class="section pb-48">
+
+                <!-- REACTIVE FORM EXAMPLE -->              
+
+                  <div class="h2 mb-24">Role Permissions</div>
+
+                  <div fxLayout="row wrap">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Select a User Role</mat-label>
+                      <mat-select [(ngModel)]="selectedRole" (selectionChange)="selectedRoleEve($event.value)">
+                        <mat-option *ngFor="let option of rolesDDl" [value]="option.roleID">
+                          {{option.name}}
+                        </mat-option>
+                      </mat-select>                     
+                    </mat-form-field>
+                    <div fxFlex fxLayoutAlign="start start">
+                      <button class="margin-left-right-5" style="margin-top:5px !important;" mat-raised-button type="submit" (click)="save()" color="accent">
+                        Save
+                      </button>
+                    </div>
+                  </div>
+
+                  <div fxLayout="row wrap">
+                    <div fxFlex>
+                      <grid [dataSet]="rowData" [gridColDef]="columnDef" [showFooter]="true"></grid>
+                    </div>
+                  </div>
+
+                  <!--<div fxLayout="row" fxLayoutAlign="center center">
+                    <button class="mr-8" mat-raised-button type="submit" (click)="save()" color="accent">
+                      Save
+                    </button>
+                    <button mat-raised-button type="button" color="basic" (click)="clear()">
+                      Clear
+                    </button>
+                  </div>-->              
+              </div>
+
+            </div>
+         
+      </div>
+      <!-- / CONTENT -->
+
+    </div>
+    <!-- / CONTENT CARD -->
+
+  </div>
+  <!-- / CENTER -->
+</div>
+
+
+

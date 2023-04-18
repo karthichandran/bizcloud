@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="5.10.3" />
+    <PackageReference Include="Selenium.Support" Version="3.141.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="81.0.4044.6900" />
+    <PackageReference Include="Selenium.WebDriver.MSEdgeDriver" Version="81.0.410" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SeleniumFixture">
+      <HintPath>..\..\..\..\..\..\selenium fixture\SeleniumFixture-master\Examples\SeleniumFixture.ExampleTests\SeleniumFixture.mstest.ExampleTests\bin\Debug\SeleniumFixture.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

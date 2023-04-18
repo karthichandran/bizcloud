@@ -1,0 +1,64 @@
+
+<h2 mat-dialog-title>Copy Tax Code</h2>
+
+<mat-dialog-content>
+
+  <form fxLayout="column" [formGroup]="copyTaxForm">
+
+    <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-bottom-10">
+      <div fxFlex>
+        <div fxFlex><span class=" padding-left-right-5"> Tax Type : </span> </div>
+        <div fxFlex class="bill-label padding-left-right-5">
+          <mat-radio-group aria-label="Select an option" style="align-self:center;" [disabled]="true">
+            <mat-radio-button [checked]="copyTaxForm.value.taxTypeId === 1" value="1">GST</mat-radio-button>
+            <mat-radio-button [checked]="copyTaxForm.value.taxTypeId === 2" value="2">TDS</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+      <mat-form-field appearance="outline" fxFlex class="pr-4">
+        <mat-label>Tax Code</mat-label>
+        <input type="text" matInput formControlName="taxCodeId">
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row wrap">
+      <mat-form-field appearance="outline" fxFlex class="pr-4">
+        <mat-label>Tax Name</mat-label>
+        <input type="text" matInput formControlName="taxName" required>
+        <mat-error>Tax Name is required!</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex class="pr-4">
+        <mat-label>Tax Value</mat-label>
+        <input type="text" matInput formControlName="taxValue" required>
+        <mat-error>Tax Value is required!</mat-error>
+      </mat-form-field>
+      
+    </div>
+
+    <div fxLayout="row wrap">
+      <mat-form-field appearance="outline" class="padding-left-right-3" fxFlex>
+        <mat-label>Effective Start Date</mat-label>
+        <input matInput [matDatepicker]="effectiveStartDate" formControlName="effectiveStartDate" required>
+        <mat-datepicker-toggle matSuffix [for]="effectiveStartDate"></mat-datepicker-toggle>
+        <mat-datepicker #effectiveStartDate></mat-datepicker>
+        <mat-error>Efective Start Date is required!</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="padding-left-right-3" fxFlex>
+        <mat-label>Effective End Date</mat-label>
+        <input matInput [matDatepicker]="effectiveEndDate" formControlName="effectiveEndDate" required>
+        <mat-datepicker-toggle matSuffix [for]="effectiveEndDate"></mat-datepicker-toggle>
+        <mat-datepicker #effectiveEndDate></mat-datepicker>
+        <mat-error>Effective End Date is required!</mat-error>
+      </mat-form-field>
+    </div>
+
+  </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions style="justify-content:center;" class="padding-top-bottom-10">
+  <button mat-raised-button class="padding-left-right-5" type="button" color="accent" (click)="save()">Save</button>
+  <button mat-raised-button class="padding-left-right-5" type="button" (click)="close()">Close</button>
+
+</mat-dialog-actions>
+

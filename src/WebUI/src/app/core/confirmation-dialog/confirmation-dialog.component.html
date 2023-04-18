@@ -1,0 +1,16 @@
+
+<div mat-dialog-title><span class="dialog-title"> Alert</span></div>
+
+<mat-dialog-content>
+  <div class="padding-top-bottom-10">{{message}}</div>
+
+</mat-dialog-content>
+
+
+<mat-dialog-actions style="justify-content:center;" class="padding-top-bottom-10">
+  <button mat-raised-button class="padding-left-right-5" type="button" color="accent" (click)="save()">OK</button>
+  <!--<button mat-raised-button class="padding-left-right-10" type="button" color="accent" (click)="save()">Save & E-mail</button>-->
+  <button mat-raised-button class="padding-left-right-5" type="button" (click)="close()">Cancel</button>
+
+</mat-dialog-actions>
+

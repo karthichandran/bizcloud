@@ -1,0 +1,150 @@
+<!--<div id="ngx-datatable" class="page-layout simple fullwidth docs"> -->
+
+<div class="content " style="padding-bottom:24px ;"  [style.width.px]="containerWidth">
+
+  <ngx-datatable #table class="material"
+                 [rows]="rowData"
+                 [loadingIndicator]="loadingIndicator"
+                 [columnMode]="'force'"
+                 [headerHeight]="48"
+                 [footerHeight]="footerHeight"
+                 [rowHeight]="'auto'"
+                 [scrollbarH]="scrollH"
+                 [reorderable]="reorderable"
+                 [selectionType]="rowSelection"
+                 [limit]="10"
+                 (select)="onSelect($event)"
+                 [groupRowsBy]="'taxCodeId'"
+                 [groupExpansionDefault]="true">
+
+    <!--<ngx-datatable-column [width]="48"
+                        [canAutoResize]="false"
+                        [sortable]="false">
+    <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected"
+                 let-selectFn="selectFn">
+      <mat-checkbox [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)"></mat-checkbox>
+    </ng-template>
+
+    <ng-template ngx-datatable-cell-template let-value="value" let-isSelected="isSelected"
+                 let-onCheckboxChangeFn="onCheckboxChangeFn">
+      <mat-checkbox [checked]="isSelected" (change)="onCheckboxChangeFn($event)"></mat-checkbox>
+    </ng-template>
+  </ngx-datatable-column>-->
+    <!--<ngx-datatable-column name="NickName"  prop="nickname">
+
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+        <span title="Double click to edit"
+              (dblclick)="editing[rowIndex + '-nickname'] = true"
+              *ngIf="!editing[rowIndex + '-nickname']">
+          {{ value }}
+        </span>
+        <input autofocus matInput
+               (blur)="updateValue($event, 'nickname', rowIndex)"
+               *ngIf="editing[rowIndex + '-nickname']"
+               type="text"
+               [value]="value" />
+      </ng-template>
+
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Name" prop="name"></ngx-datatable-column>
+
+    <ngx-datatable-column name="Last Name" prop="lastName"></ngx-datatable-column>
+
+    <ngx-datatable-column name="Company" prop="company"></ngx-datatable-column>
+  </ngx-datatable>-->
+    <ngx-datatable-group-header [rowHeight]="50" #myGroupHeader (toggle)="onDetailToggle($event)">
+      <ng-template let-group="group" let-expanded="expanded" ngx-datatable-group-header-template>
+        <div style="padding-left:5px;">
+          <span [class.datatable-icon-right]="!expanded"
+                [class.datatable-icon-down]="expanded"
+                title="Expand/Collapse Group"
+                (click)="toggleExpandGroup(group)">
+          </span>
+          Tax Code: {{ group.value[0].taxCodeId }}
+        </div>
+      </ng-template>
+    </ngx-datatable-group-header>
+    <ngx-datatable-column name="{{column.header}}" prop="{{column.field}}" *ngFor="let column of columnDefs" [width]="column.width" [minWidth]="column.minWidth" [maxWidth]="column.maxWidth">
+
+      <ng-template ngx-datatable-header-template let-value="value" let-group="group">
+        <div *ngIf="!column.checkall" class="header-label">
+          <span class="header-name {{column.class}}" style=" vertical-align: super;" matTooltip="{{column.header}}" [matTooltipPosition]="'above'" (click)="sortable(column.field)">{{column.header}}</span>
+          <mat-icon class="s-22 sortable" style="float:right;">unfold_more</mat-icon>
+        </div>
+        <div *ngIf="column.checkall">
+          <mat-checkbox (change)="selectAllCheckbox(column.field,$event)"></mat-checkbox> <span style="padding-left:5px;">{{column.header}}</span>
+        </div>
+      </ng-template>
+
+
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+        <div *ngIf="column.type=='checkbox'">
+          <mat-checkbox [checked]="value" [disabled]="row.disabled" (change)="onCheckboxChange(rowIndex,column,$event)"></mat-checkbox>
+        </div>
+        <div *ngIf="column.type=='textbox'">
+          <span title="Double click to edit textbox" class="label"
+                (click)="showInline(rowIndex +column.field)"
+                *ngIf="!editing[rowIndex + column.field]">
+            {{ value }}
+          </span>
+          <input autofocus matInput class="grid-textbox"
+                 (blur)="updateValue($event.target, column.field, rowIndex)"
+                 *ngIf="editing[rowIndex + column.field]"
+                 type="text"
+                 [value]="value" />
+        </div>
+        <!--Note : min width for date picker should be 180-->
+        <div *ngIf="column.type=='date'">
+          <span title="Double click to edit textbox" class="label"
+                (click)="showInline(rowIndex +column.field)"
+                *ngIf="!editing[rowIndex + column.field]">
+            <span *ngIf="value!=''">  {{ value | dateFormat:'DD-MMM-YYYY'}} </span>
+          </span>
+          <div *ngIf="editing[rowIndex + column.field]" style="background-color:#fff;">
+            <input matInput class="date-picker-input" (dateChange)="updateValue($event.target, column.field, rowIndex)" [matDatepicker]="date" [value]="value">
+            <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+            <mat-datepicker #date></mat-datepicker>
+          </div>
+
+        </div>
+
+        <div *ngIf="column.type=='selection'">
+          <span title="Double click to edit textbox" class="label"
+                (click)="showInline(rowIndex +column.field)"
+                *ngIf="!editing[rowIndex + column.field]">
+            {{ getValue(value,column.options) }}
+          </span>
+          <mat-select *ngIf="editing[rowIndex + column.field]" style="background-color:#fff;" class="grid-selection"
+                      (selectionChange)="updateValue($event, column.field, rowIndex)" [value]="value">
+            <mat-option *ngFor="let opt of column.options" [value]="opt.id">
+              {{opt.description}}
+            </mat-option>
+          </mat-select>
+        </div>
+        <div *ngIf="column.type=='button'" class="action-column ">
+          <div *ngFor="let act of column.activity">
+            <mat-icon class="active-icon red-600 s-25 grid-action" *ngIf="act=='delete'" (click)="deleteAction(row)">highlight_off</mat-icon>
+            <mat-icon class="active-icon blue-600 s-25 grid-action" *ngIf="act=='edit'" (click)="editAction(row)">create</mat-icon>
+            <mat-icon class="active-icon green-600 s-25 grid-action" *ngIf="act=='add'" (click)="addAction(row)">add_circle_outline</mat-icon>
+            <mat-icon class="active-icon green-600 s-25 grid-action" *ngIf="act=='save'" (click)="saveAction(row)">check_circle_outline</mat-icon>
+            <!--<mat-icon class="active-icon  mat-icon-button s-25 custom-button " *ngIf="act=='custom'" (click)="customAction(row)">launch</mat-icon>-->
+            <button mat-icon-button class="custom-button" *ngIf="act=='custom'" (click)="customAction(row)">
+              <mat-icon>launch</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="column.type=='label'">
+          <span class="label"> {{ value }} </span>
+        </div>
+        <div *ngIf="column.type=='labellist'">
+          <span *ngFor="let opt of value" class="label"> {{ opt.name }}</span><br />
+        </div>
+      </ng-template>
+
+
+    </ngx-datatable-column>
+  </ngx-datatable>
+</div>
+
+<!--</div>-->

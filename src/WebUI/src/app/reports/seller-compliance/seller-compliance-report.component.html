@@ -1,0 +1,113 @@
+<div id="user" class="page-layout carded fullwidth inner-scroll">
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg accent"></div>
+  <!-- / TOP BACKGROUND -->
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header accent"
+         fxLayout="row" fxLayoutAlign="space-between center">
+
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+
+        <!--<button mat-icon-button class="mr-16" [routerLink]="">
+          <mat-icon>arrow_back</mat-icon>
+        </button>-->
+
+        <div fxLayout="column" fxLayoutAlign="start start"
+             [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          <div class="h2">
+            Seller Compliance Report
+          </div>
+
+        </div>
+      </div>
+      <!-- / APP TITLE -->
+
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT CARD -->
+    <div class="content-card">
+
+      <!-- CONTENT -->
+      <div class="content p-24">
+
+        <form name="form" [formGroup]="reportform" fxLayout="column">
+
+          <div class="h2 mb-24">Seller Compliance Report</div>
+
+          <div fxLayout="row wrap">
+            <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+              <mat-label>Sellers</mat-label>
+              <mat-select formControlName="sellerId">
+                <mat-option *ngFor="let option of sellerDDl" [value]="option.sellerID">
+                  {{option.sellerName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="search-textbox" appearance="outline" fxFlex>
+              <mat-label>Premises</mat-label>
+              <mat-select formControlName="premisesId">
+                <mat-option *ngFor="let option of premisesDDl" [value]="option.propertyID">
+                  {{option.addressPremises}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+            <div fxLayout="row wrap">
+              <mat-form-field class="search-textbox" appearance="outline" fxFlex>
+                <mat-label>Unit No</mat-label>
+                <input matInput name="unitNo" formControlName="unitNo">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" fxFlex class="search-textbox ">
+                <mat-label>Customer Name</mat-label>
+                <input matInput name="customerName" formControlName="customerName">
+              </mat-form-field>
+              <mat-form-field class="search-textbox" appearance="outline" fxFlex>
+                <mat-label>Lot No</mat-label>
+                <mat-select formControlName="lotNo">
+                  <mat-option *ngFor="let option of lotNoDDl" [value]="option.lotNo">
+                    {{option.lotNo}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="center center" class="padding-bottom-10">
+              <button class="search_button" mat-raised-button type="submit" (click)="search()" color="accent">
+                Search
+                <mat-icon class="s-22" style="margin-left:5px">search</mat-icon>
+              </button>
+              <button class="search_button" mat-raised-button type="button" color="basic" (click)="reset()">
+                Reset
+                <mat-icon class="s-22" style="margin-left:5px">refresh</mat-icon>
+              </button>
+              <button class="search_button pink" mat-raised-button (click)="downloadExcel()">
+                <span>Download </span>
+                <mat-icon class="s-22" style="margin-left:5px">get_app</mat-icon>
+              </button>
+            </div>
+            <div fxLayout="row wrap">
+              <div fxFlex>
+                <grid [dataSet]="reportRowData" [gridColDef]="reportColumnDef" [showFooter]="true" [scrollbarH]="true" [rowSelection]="'undefined'"></grid>
+              </div>
+            </div>
+
+</form>
+
+      </div>
+      <!-- / CONTENT -->
+
+    </div>
+    <!-- / CONTENT CARD -->
+
+  </div>
+  <!-- / CENTER -->
+</div>
+
+
+

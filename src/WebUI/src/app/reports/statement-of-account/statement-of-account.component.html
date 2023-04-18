@@ -1,0 +1,168 @@
+<div id="user" class="page-layout carded fullwidth inner-scroll">
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg accent"></div>
+  <!-- / TOP BACKGROUND -->
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header accent"
+         fxLayout="row" fxLayoutAlign="space-between center">
+
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+
+        <!--<button mat-icon-button class="mr-16" [routerLink]="">
+          <mat-icon>arrow_back</mat-icon>
+        </button>-->
+
+        <div fxLayout="column" fxLayoutAlign="start start"
+             [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          <div class="h2">
+            Statement Of Account Report
+          </div>
+
+        </div>
+      </div>
+      <!-- / APP TITLE -->
+
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT CARD -->
+    <div class="content-card">
+
+      <!-- CONTENT -->
+      <div class="content p-24">
+
+        <form name="form" [formGroup]="reportform" fxLayout="column">
+
+          <div class="h2 mb-24"> Statement Of Account</div>
+
+          <div fxLayout="row wrap">
+            <mat-form-field class="search-textbox" appearance="outline" fxFlex>
+              <mat-label>Premises</mat-label>
+              <mat-select formControlName="premisesId">
+                <mat-option *ngFor="let option of premisesDDl" [value]="option.propertyID">
+                  {{option.addressPremises}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="search-textbox" appearance="outline" fxFlex>
+              <mat-label>Unit No</mat-label>
+              <input matInput name="unitNo" formControlName="unitNo">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex class="search-textbox ">
+              <mat-label>Customer Name</mat-label>
+              <input matInput name="customerName" formControlName="customerName">
+            </mat-form-field>
+          </div>
+
+          <div fxLayout="row wrap" fxLayoutAlign="center center" class="padding-bottom-10">
+            <button class="search_button" mat-raised-button type="submit" (click)="search()" color="accent">
+              Search
+              <mat-icon class="s-22" style="margin-left:5px">search</mat-icon>
+            </button>
+            <button class="search_button" mat-raised-button type="button" color="basic" (click)="reset()">
+              Reset
+              <mat-icon class="s-22" style="margin-left:5px">refresh</mat-icon>
+            </button>
+            <button class="search_button pink" mat-raised-button (click)="downloadExcel()">
+              <span>Download </span>
+              <mat-icon class="s-22" style="margin-left:5px">get_app</mat-icon>
+            </button>
+          </div>
+          <div fxLayout="row wrap" class="mb-10">
+            <div fxFlex >
+              <div fxFlex class="header-yellow-color color-indiacator border-yellow"><span>Payable</span></div>
+              <div fxFlex class="header-lightsalmon-color color-indiacator border-lightsalmon"><span>Received</span></div>
+              <div fxFlex class="header-green-color color-indiacator border-green"><span>Remitted</span></div>
+            </div>
+            <div fxFlex></div>
+            <div fxFlex></div>
+          </div>
+            <div fxLayout="row wrap">
+              <div fxFlex>
+                <grid [dataSet]="reportRowData" [gridColDef]="reportColumnDef" [showFooter]="true" [scrollbarH]="true" [rowSelection]="'undefined'"></grid>
+              </div>
+            </div>
+            <div fxLayout="row wrap">
+              <div fxFlex>
+                <div fxLayout="row">
+                  <div fxFlex class="mb-10">
+                    <span class="h2">Summary</span>
+                  </div>
+                </div>
+
+                <div fxLayout="row ">
+                  <div fxFlex="70" class="summary-container">
+                    <div fxLayout="row" class="summary-header-row">
+                      <div fxFlex class="summary-cell"></div>
+                      <div fxFlex class="summary-cell"> <span>Payable</span></div>
+                      <div fxFlex class="summary-cell"> <span>Received</span></div>
+                      <div fxFlex class="summary-cell"> <span>Paid</span></div>
+                      <div fxFlex class="summary-cell"> <span>Balance</span></div>
+                    </div>
+                    <div fxLayout="row" class="summary-odd-row">
+                      <div fxFlex class="summary-cell"> <span>TDS</span></div>
+                      <div fxFlex class="summary-cell"> <span>{{payableTds}}</span></div>
+                      <div fxFlex class="summary-cell"> <span>{{receivedTds}}</span></div>
+                      <div fxFlex class="summary-cell"> <span>{{remittedTds}}</span></div>
+                      <div fxFlex class="summary-cell"> <span>{{balanceTds}}</span></div>
+                    </div>
+                    <div fxLayout="row" class="summary-even-row">
+                      <div fxFlex class="summary-cell"> <span>TDS Interest</span></div>
+                      <div fxFlex class="summary-cell"> <span>{{payableInterest}}</span></div>
+                      <div fxFlex class="summary-cell"> <span>{{receivedInterest}}</span></div>
+                      <div fxFlex class="summary-cell"> <span>{{remittedInterest}}</span></div>
+                      <div fxFlex class="summary-cell"> <span>{{balanceInterest}}</span></div>
+                    </div>
+                    <div fxLayout="row" class="summary-odd-row">
+                      <div fxFlex class="summary-cell"> <span>Late Fee</span></div>
+                      <div fxFlex class="summary-cell"> <span>{{payableLateFee}}</span></div>
+                      <div fxFlex class="summary-cell"> <span>{{receivedLateFee}}</span></div>
+                      <div fxFlex class="summary-cell"> <span>{{remittedLateFee}}</span></div>
+                      <div fxFlex class="summary-cell"> <span>{{balanceLateFee}}</span></div>
+                    </div>
+                    <div fxLayout="row" class="summary-even-row">
+                      <div fxFlex class="summary-cell"></div>
+                      <div fxFlex class="summary-cell"> <span>{{payableTotal}}</span></div>
+                      <div fxFlex class="summary-cell"> <span>{{receivedTotal}}</span></div>
+                      <div fxFlex class="summary-cell"> <span>{{remittedTotal}}</span></div>
+                      <div fxFlex class="summary-cell"> <span>{{balanceTotal}}</span></div>
+                    </div>
+                    <div fxLayout="row">
+                      <div fxFlex class="summary-cell">
+
+                      </div>
+                    </div>
+                    <div fxLayout="row" class="summary-odd-row">
+                      <div fxFlex class="summary-cell"> <span>Service Charge</span></div>
+                      <div fxFlex class="summary-cell"> <span>{{payableServiceFee}}</span></div>
+                      <div fxFlex class="summary-cell"> <span>{{receivedServiceFee}}</span></div>
+                      <div fxFlex class="summary-cell"> <span></span></div>
+                      <div fxFlex class="summary-cell"><span>{{balanceServiceFee}}</span></div>
+                    </div>
+                  </div>
+                  <div fxFlex="30">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+        </form>
+
+      </div>
+      <!-- / CONTENT -->
+
+    </div>
+    <!-- / CONTENT CARD -->
+
+  </div>
+  <!-- / CENTER -->
+</div>
+
+
+

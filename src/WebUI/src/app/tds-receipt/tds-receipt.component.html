@@ -1,0 +1,207 @@
+<div id="user" class="page-layout carded fullwidth inner-scroll">
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg accent"></div>
+  <!-- / TOP BACKGROUND -->
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header accent"
+         fxLayout="row" fxLayoutAlign="space-between center">
+
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+
+        <!--<button mat-icon-button class="mr-16" [routerLink]="">
+          <mat-icon>arrow_back</mat-icon>
+        </button>-->
+
+        <div fxLayout="column" fxLayoutAlign="start start"
+             [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          <div class="h2">
+            TDS Receipt
+          </div>
+
+        </div>
+      </div>
+      <!-- / APP TITLE -->
+
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT CARD -->
+    <div class="content-card">
+
+      <!-- CONTENT -->
+      <div class="content">
+
+        <div class="order-details tab-content p-24" fusePerfectScrollbar>
+
+          <div class="section pb-48">
+
+            <!-- REACTIVE FORM EXAMPLE -->
+          
+            <form name="form" [formGroup]="receiptform" fxLayout="column">
+
+              <div class="h2 mb-24"> Receipt</div>
+              <div fxLayout="row wrap">
+                <div appearance="outline" fxFlex>
+                  <label>Receipt Type</label>
+                  <mat-radio-group aria-label="Select an option" formControlName="receiptType">
+                    <mat-radio-button value="2">TDS Receipt</mat-radio-button>
+                    <mat-radio-button value="1">Service Fee</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+
+              </div>
+              <div fxLayout="row wrap">
+                <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                  <mat-label>Status</mat-label>
+                  <mat-select formControlName="statusId">
+                    <mat-option *ngFor="let option of statusType" [value]="option.id">
+                      {{option.description}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div fxFlex>
+                  <mat-form-field appearance="outline" fxFlex class="search-textbox custom-border" *ngIf="receiptform.value.receiptType==2">
+                    <mat-label>Lot No</mat-label>
+                    <mat-select formControlName="lotNo">
+                      <mat-option *ngFor="let option of lotNoDDl" [value]="option.lotNo">
+                        {{option.lotNo}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+              </div>
+              <div fxLayout="row wrap">
+                <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                  <mat-label>Premises</mat-label>
+                  <mat-select formControlName="premisesId">
+                    <mat-option *ngFor="let option of premisesDDl" [value]="option.propertyID">
+                      {{option.addressPremises}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <!--<mat-form-field class="selection-fix" appearance="outline" fxFlex *ngIf="receiptform.value.receiptType==2">
+      <mat-label>Sellers</mat-label>
+      <mat-select formControlName="sellerId">
+        <mat-option *ngFor="let option of sellerDDl" [value]="option.sellerID">
+          {{option.sellerName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>-->
+                <!--<mat-form-field class="selection-fix" appearance="outline" fxFlex>
+      <mat-label>Unit No</mat-label>
+      <mat-select formControlName="unitNo">
+        <mat-option *ngFor="let option of statusType" [value]="option.stateID">
+          {{option.state}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>-->
+                <mat-form-field appearance="outline" fxFlex class="search-textbox custom-border">
+                  <mat-label>Unit No</mat-label>
+                  <input matInput name="customerName" formControlName="unitNo">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex class="search-textbox custom-border">
+                  <mat-label>Customer Name</mat-label>
+                  <input matInput name="customerName" formControlName="customerName">
+                </mat-form-field>
+
+              </div>
+
+              <div fxLayout="row" fxLayoutAlign="center center" class="padding-bottom-10">
+                <button class="mr-8" mat-raised-button type="submit" (click)="search()" color="accent">
+                  Search
+                  <mat-icon class="s-22" style="margin-left:5px">search</mat-icon>
+                </button>
+                <button class="search_button" mat-raised-button type="button" color="basic" (click)="reset()">
+                  Reset
+                  <mat-icon class="s-22" style="margin-left:5px">refresh</mat-icon>
+                </button>
+
+              </div>
+              <div fxLayout="row wrap">
+                <mat-form-field appearance="outline" fxFlex class="textbox-max-width">
+                  <mat-label>Date of Date</mat-label>
+                  <input matInput [matDatepicker]="dateOfReceipt" [(ngModel)]="receipt" [ngModelOptions]="{standalone: true}">
+                  <mat-datepicker-toggle matSuffix [for]="dateOfReceipt"></mat-datepicker-toggle>
+                  <mat-datepicker #dateOfReceipt></mat-datepicker>
+
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex class="search-textbox custom-border">
+                  <mat-label>Mode of Receipt</mat-label>
+                  <mat-select [(ngModel)]="mode" [ngModelOptions]="{standalone: true}">
+                    <mat-option *ngFor="let option of modeOfReceiptDDl" [value]="option.id">
+                      {{option.description}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex class="search-textbox custom-border">
+                  <mat-label>Reference No</mat-label>
+                  <input matInput name="refNo" [(ngModel)]="refNo" [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+                <div fxFlex fxLayoutAlign="start start">
+                  <button class="search_button green" mat-raised-button type="button" (click)="apply()">
+                    Apply
+                  </button>
+                </div>
+                <!-- <div fxFlex fxLayoutAlign="end center" class="padding-top-bottom-10" *ngIf="receiptform.value.receiptType==1 && receiptform.value.statusId==2">
+                  <button mat-raised-button type="submit" (click)="sendMail()" color="accent">
+                    Send Mail
+                    <mat-icon class="s-22" style="margin-left:5px">email</mat-icon>
+                  </button>
+                </div> -->
+              </div>
+
+              <div fxLayout="row wrap">
+                <div fxFlex *ngIf="receiptform.value.receiptType==2">
+                  <grid [dataSet]="tdsRowData" [gridColDef]="tdsColumnDef" [showFooter]="true" (saveRow)="save($event)" (checkboxEve)="checkboxEve()" [rowSelection]="'undefined'"></grid>
+                </div>
+              </div>
+              <div fxLayout="row wrap">
+                <div fxFlex *ngIf="receiptform.value.receiptType==1">
+                  <grid [dataSet]="serviceFeeRowData" [gridColDef]="serviceColumnDef" [showFooter]="true" (saveRow)="save($event)" [scrollbarH]="true" [rowSelection]="'undefined'"></grid>
+                </div>
+              </div>
+              <div fxLayout="row wrap">
+                <div fxFlex>
+                </div>
+                <div fxFlex>
+                </div>
+                <div fxFlex>
+                </div>
+                <div fxFlex>
+                </div>
+                <div fxFlex>
+                  <mat-form-field appearance="outline" fxFlex class="search-textbox custom-border" *ngIf="receiptform.value.receiptType==2">
+                    <mat-label>Total Tds Received</mat-label>
+                    <input matInput name="totalTds" [(ngModel)]="totalTds" [ngModelOptions]="{standalone: true}" disabled="true">
+                  </mat-form-field>
+                </div>
+                <div fxFlex fxLayoutAlign="end center">
+                  <button mat-raised-button type="submit" (click)="save()" color="accent">
+                    Save
+                  </button>
+                </div>
+              </div>
+            </form>            
+          </div>
+
+        </div>
+
+      </div>
+      <!-- / CONTENT -->
+
+    </div>
+    <!-- / CONTENT CARD -->
+
+  </div>
+  <!-- / CENTER -->
+</div>
+
+
+

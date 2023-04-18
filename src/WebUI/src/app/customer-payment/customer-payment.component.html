@@ -1,0 +1,428 @@
+<div id="user" class="page-layout carded fullwidth inner-scroll">
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg accent"></div>
+  <!-- / TOP BACKGROUND -->
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header accent"
+         fxLayout="row" fxLayoutAlign="space-between center">
+
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+
+        <!--<button mat-icon-button class="mr-16" [routerLink]="'/apps/e-commerce/orders'">
+          <mat-icon>arrow_back</mat-icon>
+        </button>-->
+
+        <div fxLayout="column" fxLayoutAlign="start start"
+             [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          <div class="h2">
+            Client Payment
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start start" style="padding-left:50px;" *ngIf="showHeaderNames">
+          <div class="header-customeer-info" *ngIf="customerAndPan.length>0">        
+              {{customerAndPan[0].name}}          
+          </div>
+          <div class="header-customeer-info">{{baseInstallment.propertyPremises}}</div>
+          <div class="header-customeer-info">{{baseInstallment.unitNo}}</div>
+        </div>
+      </div>
+      <!-- / APP TITLE -->
+
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT CARD -->
+    <div class="content-card">
+      <mat-tab-group fxLayout="column" fxFlex (selectedTabChange)="tabChanged($event)" style="height:100%;">
+        <mat-tab label="Client Lookup">
+          <div class="products tab-content p-24 " fusePerfectScrollbar>
+            <form name="searchForm" [formGroup]="searchForm">
+              <div fxLayout="column ">
+                <div fxLayout="row wrap ">
+                  <div fxFlex>
+                    <mat-form-field appearance="outline" fxFlex class="search-textbox">
+                      <mat-label>Customer Name</mat-label>
+                      <input matInput name="customerName" formControlName="searchByCustomerName">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex>
+                    <!-- <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                      <mat-label>Property</mat-label>
+                      <mat-select name="property" formControlName="searchBypropertyID">
+                        <mat-option *ngFor="let option of propertyDDl" [value]="option.propertyID">
+                          {{option.addressPremises}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field> -->
+                    <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                      <mat-label>Property</mat-label>
+                      <mat-select name="searchByPropertyID" formControlName="searchBypropertyID"   #PropertyFilterSelectForSearch>
+                        <mat-option>
+                          <ngx-mat-select-search [formControl]="propertyFilterCtrlForSearch"  placeholderLabel="Search"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let option of filteredPropertyForSearch| async" [value]="option.propertyID">
+                          {{option.addressPremises}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex>
+                    <mat-form-field appearance="outline" fxFlex class="search-textbox">
+                      <mat-label>Premises</mat-label>
+                      <input matInput name="Premises" formControlName="searchBypremises">
+                    </mat-form-field>
+                  </div>
+                  <mat-form-field appearance="outline" fxFlex class="search-textbox">
+                    <mat-label>Unit No</mat-label>
+                    <input matInput name="unit" formControlName="searchByUnit" type="number">
+                  </mat-form-field>
+
+                </div>
+               
+                <mat-accordion class="example-headers-align" multi>
+                  <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        Download Filters
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+
+                    <div fxLayout="row wrap">
+                      <div fxFlex>
+                        <mat-form-field class="selection-fix padding-left-right-3" appearance="outline" fxFlex>
+                          <mat-label>Nature of Payment</mat-label>
+                          <mat-select formControlName="searchBynatureOfPaymentID">
+                            <mat-option *ngFor="let option of searchNatureOfPayment" [value]="option.natureOfPaymentID">
+                              {{option.natureOfPaymentText}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex>
+                        <mat-form-field appearance="outline" fxFlex class="search-textbox custom-border">
+                          <mat-label>Lot No</mat-label>
+                          <input matInput name="LotNo" formControlName="searchByLot">
+                        </mat-form-field>
+                      </div>
+
+                      <div fxFlex>
+                        <mat-form-field class="selection-fix custom-border" appearance="outline" fxFlex>
+                          <mat-label>Seller</mat-label>
+                          <mat-select name="seller" formControlName="searchBySellerID">
+                            <mat-option *ngFor="let option of sellerList" [value]="option.sellerID">
+                              {{option.sellerName}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+
+                    </div>
+                    <div fxLayout="row wrap">
+                      <div fxFlex>
+                        <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                          <mat-label>Status </mat-label>
+                          <mat-select name="searchBy" formControlName="searchByStatus">
+                            <mat-option *ngFor="let option of remitanceStatusDDl" [value]="option.id">
+                              {{option.description}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <mat-form-field appearance="outline" fxFlex class="padding-left-right-3 custom-border">
+                        <mat-label>From Revised Date </mat-label>
+                        <input matInput [matDatepicker]="fromDate" formControlName="fromDate" (dateChange)="validateDate()">
+                        <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                        <mat-datepicker #fromDate></mat-datepicker>
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex class="padding-left-right-3 custom-border">
+                        <mat-label>To Revised Date</mat-label>
+                        <input matInput [matDatepicker]="toDate" formControlName="toDate" (dateChange)="validateDate()">
+                        <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                        <mat-datepicker #toDate></mat-datepicker>
+                      </mat-form-field>
+
+
+                    </div>
+                  </mat-expansion-panel>
+                </mat-accordion>
+                <div fxLayout="row" fxLayoutAlign="center center" class="padding-top-bottom-10">
+                  <button class="search_button" mat-raised-button type="submit" (click)="search()" color="accent">
+                    Search
+                    <mat-icon class="s-22" style="margin-left:5px">search</mat-icon>
+                  </button>
+                  <button class="search_button" mat-raised-button type="button" color="basic" (click)="reset()">
+                    Reset
+                    <mat-icon class="s-22" style="margin-left:5px">refresh</mat-icon>
+                  </button>
+                  <button class="search_button pink" mat-raised-button (click)="downloadExcel()">
+                    <span>Download </span>
+                    <mat-icon class="s-22" style="margin-left:5px">get_app</mat-icon>
+                  </button>
+                  <input hidden type="file" #importPayment accept=".csv,.ods,.doc,.docx,.xls,.xlsx,application/pdf,image/*" (change)="ImportFile($event)" />
+                  <button class="search_button import-btn" mat-raised-button (click)="importPayment.click()">
+                    <span>Import </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="#fff" /></svg>
+                  </button>
+                </div>
+                <div fxLayout="row wrap">
+                  <div fxFlex>
+                    <grid [dataSet]="rowData" [gridColDef]="columnDef" [showFooter]="true" [rowSelection]="'undefined'" (editRow)="editRow($event)"></grid>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+        </mat-tab>
+
+        <mat-tab label="Client Payment">
+          <div fusePerfectScrollbar>
+            <!-- VERTICAL STEPPER EXAMPLE -->
+            <mat-horizontal-stepper class="mat-elevation-z4" [linear]="true" #stepper (selectionChange)="selectedstepperIndex($event)">
+
+              <mat-step>
+                <ng-template matStepLabel>Client details</ng-template>
+
+                <div fxFlex="1 0 auto" fxLayout="row wrap" class="margin-top-10 client-panel">
+                  <div fxFlex>
+                    <div fxLayout="row wrap" class="row-panel-header">
+                      <span class="bill-label padding-left-right-5">Clients Name  </span>
+                    </div>
+                    <div fxLayout="row wrap">
+                      <div fxFlex class="padding-top-10">
+                        <div *ngFor="let obj of customerAndPan" fxLayout="row" class="padding-5 ">
+                          <div fxFlex class="row-panel-cell"> <span class=" "> {{obj.name}}</span></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div fxFlex>
+                    <div fxLayout="row wrap" class="row-panel-header">
+                      <span class="bill-label padding-left-right-5">PAN  </span>
+                    </div>
+                    <div fxLayout="row wrap">
+                      <div fxFlex class="padding-top-10">
+                        <div *ngFor="let obj of customerAndPan" fxLayout="row wrap" class="padding-5 ">
+                          <div fxFlex class="row-panel-cell">  <span> {{obj.pan}}</span></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div fxFlex>
+                    <div fxLayout="row wrap" class="row-panel-header">
+                      <span class="bill-label padding-left-right-5">Premises  </span>
+                    </div>
+                    <div fxLayout="row wrap">
+                      <div fxFlex class="row-panel-cell padding-top-10"> <span>{{baseInstallment.propertyPremises}}</span></div>
+                    </div>
+                  </div>
+                  <!--<div fxFlex>
+                    <div fxLayout="row wrap" class="row-panel-header">
+                      <span class=" bill-label padding-left-right-5">Seller Name  </span>
+                    </div>
+                    <div fxLayout="row wrap">
+                      <div fxFlex>
+                        <div *ngFor="let obj of sellerNames" fxLayout="row wrap">
+                          <div fxFlex class="row-panel-cell padding-top-10"> <span> {{obj.name}}</span></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>-->
+                  <div fxFlex>
+                    <div fxLayout="row wrap" class="row-panel-header">
+                      <span class="bill-label padding-left-right-5">Unit No  </span>
+                    </div>
+                    <div fxLayout="row wrap">
+                      <div fxFlex class="row-panel-cell padding-top-10">  <span>{{baseInstallment.unitNo}}</span></div>
+                    </div>
+                  </div>
+                  <!--<div fxFlex>
+                    <div fxLayout="row wrap" class="row-panel-header">
+                      <span class="bill-label padding-left-right-5">Amount Paid  </span>
+                    </div>
+                    <div fxLayout="row wrap">
+                      <div fxFlex class="row-panel-cell padding-top-10">  <span>{{baseInstallment.amountPaid}}</span></div>
+                    </div>
+                  </div>-->
+
+                  <!--<div fxFlex>
+                    <div fxLayout="row wrap" class="row-panel-header">
+                      <span class="bill-label padding-left-right-5">Remarks  </span>
+                    </div>
+                    <div fxLayout="row wrap" >
+                      <div fxFlex class="row-panel-cell padding-top-10">  <span >{{baseInstallment.remarks}}</span></div>
+                    </div>
+                  </div>-->
+                </div>
+
+                <br />
+                <br />
+                <br />
+                <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-bottom-5">
+                  <mat-form-field class="selection-fix padding-left-right-3" appearance="outline" fxFlex="75">
+                    <mat-label>Remarks</mat-label>
+                    <input matInput type="text" [(ngModel)]="baseInstallment.remarks">
+                  </mat-form-field>
+
+                  <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                    <mat-label>Status</mat-label>
+                    <mat-select [(ngModel)]="baseInstallment.statusTypeID">
+                      <mat-option *ngFor="let option of statusDDl" [value]="option.statusTypeID">
+                        {{option.status}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                  <button mat-raised-button type="button" class="mr-16" (click)="save('status')" color="accent">
+                    Save
+                  </button>
+                  <div class="stepper-button  mat-raised-button" (click)="Next(stepper)" color="accent">
+                    Next
+                  </div>
+                </div>
+
+              </mat-step>
+
+              <mat-step>
+
+                <form fxLayout="column" [formGroup]="clientform">
+
+                  <ng-template matStepLabel>Payment</ng-template>
+
+                  <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-10">
+
+                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                      <mat-label>Date of Payment</mat-label>
+                      <input matInput [matDatepicker]="dateOfPayment" [max]="maxDate" formControlName="dateOfPayment" (dateChange)="assignRevisedDate($event)" required>
+                      <mat-datepicker-toggle matSuffix [for]="dateOfPayment"></mat-datepicker-toggle>
+                      <mat-datepicker #dateOfPayment></mat-datepicker>
+                      <mat-error *ngIf="clientform.controls['dateOfPayment'].errors?.matDatepickerMax">Date cannot be a future day</mat-error>
+                      <mat-error *ngIf="clientform.controls['dateOfPayment'].errors?.required">Date of Payment is required!</mat-error>
+                    </mat-form-field>
+                
+                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                      <mat-label>Revised  Date of Payment</mat-label>
+                      <input matInput [matDatepicker]="revisedDateOfPayment" [max]="maxDate" formControlName="revisedDateOfPayment" (dateChange)="onPaymentDateChanged($event)" required>
+                      <mat-datepicker-toggle matSuffix [for]="revisedDateOfPayment"></mat-datepicker-toggle>
+                      <mat-datepicker #revisedDateOfPayment></mat-datepicker>
+                      <mat-error *ngIf="clientform.controls['revisedDateOfPayment'].errors?.matDatepickerMax">Date cannot be a future day</mat-error>
+                      <mat-error *ngIf="clientform.controls['revisedDateOfPayment'].errors?.required">Revised Date of Payment is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                      <mat-label>Date of deduction</mat-label>
+                      <input matInput [matDatepicker]="dateOfDeduction" [max]="maxDate" formControlName="dateOfDeduction" required>
+                      <mat-datepicker-toggle matSuffix [for]="dateOfDeduction"></mat-datepicker-toggle>
+                      <mat-datepicker #dateOfDeduction></mat-datepicker>
+                      <mat-error *ngIf="clientform.controls['dateOfDeduction'].errors?.matDatepickerMax">Date cannot be a future day</mat-error>
+                      <mat-error *ngIf="clientform.controls['dateOfDeduction'].errors?.required">Date of deduction is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                      <mat-label>Receipt No</mat-label>
+                      <input matInput formControlName="receiptNo" required>
+                      <mat-error>Receipt No is required!</mat-error>
+                    </mat-form-field>
+
+                  </div>
+                  <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-5">
+                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                      <mat-label>Lot No</mat-label>
+                      <input type="number" matInput formControlName="lotNo" required>
+                      <mat-error>Lot No is required!</mat-error>
+                    </mat-form-field>
+                    <!--<mat-form-field class="selection-fix padding-left-right-3" appearance="outline" fxFlex>
+                      <mat-label>TDS collected By Seller</mat-label>
+                      <mat-select formControlName="tdsCollected">
+                        <mat-option *ngFor="let option of tdsCollectedBySellerDDl" [value]="option.id">
+                          {{option.description}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>-->
+                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3 ">
+                      <mat-label>TDS collected By Seller</mat-label>
+                      <input type="text" matInput formControlName="tdsCollectedText">
+                    </mat-form-field>
+                    <mat-form-field class="selection-fix padding-left-right-3" appearance="outline" fxFlex>
+                      <mat-label>Nature of Payment</mat-label>
+                      <mat-select formControlName="natureOfPaymentID" (selectionChange)="OnNatureOfPayChanged($event)">
+                        <mat-option *ngFor="let option of natureOfPayment" [value]="option.natureOfPaymentID">
+                          {{option.natureOfPaymentText}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="selection-fix padding-left-right-3" *ngIf="clientform.value.natureOfPaymentID==2" appearance="outline" fxFlex>
+                      <mat-label>Not To Be Considered</mat-label>
+                      <mat-select formControlName="notConsidered" required>
+                        <mat-option *ngFor="let option of natureOfPaymentSubSet" [value]="option.natureOfPaymentID">
+                          {{option.natureOfPaymentText}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error>Field is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                      <mat-label>Amount paid</mat-label>
+                      <input type="number" matInput formControlName="amountPaid" required>
+                      <mat-error>Amount Paid is required!</mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="1 0 auto" fxLayout="row wrap">
+                    <div fxFlex>
+                      <grid *ngIf="showPaymentGrid" [dataSet]="customersShareData" [gridColDef]="customersShareColdef" [rowSelection]="'undefined'"></grid>
+                    </div>
+                  </div>
+
+                  <div fxLayout="row" fxLayoutAlign="center center">
+                    <button class="mr-8" mat-raised-button matStepperPrevious type="button" color="accent">
+                      Previous
+                    </button>
+                    <button mat-raised-button type="button" class="mr-16" (click)="save('installment')" color="accent">
+                      Save
+                    </button>
+                    <button mat-raised-button type="button" class="mr-16" (click)="AddNewPayment()" color="accent">
+                      Add
+                    </button>
+                    <button mat-raised-button type="button" class="mr-16" *ngIf="clientform.value.clientPaymentID!=0" (click)="deletePayment()" color="warn">
+                      delete
+                    </button>
+
+                  </div>
+
+                  <div fxFlex="1 0 auto" fxLayout="row wrap">
+                    <span class="mat-title">Payment History</span>
+                  </div>
+
+                  <div fxFlex="1 0 auto" fxLayout="row wrap">
+                    <div fxFlex>
+                      <grid *ngIf="showPaymentGrid" [dataSet]="historyData"  [showFooter]="true" [gridColDef]="historyColDef" [rowSelection]="'single'" (selectedRows)="selectedHistoryRows($event)"></grid>
+                    </div>
+                  </div>
+
+                </form>
+
+              </mat-step>
+
+            </mat-horizontal-stepper>
+            <!-- / VERTICAL STEPPER EXAMPLE -->
+          </div>
+        </mat-tab>
+
+
+      </mat-tab-group>
+    </div>
+    <!-- / CONTENT CARD -->
+
+  </div>
+  <!-- / CENTER -->
+</div>
+
+
+

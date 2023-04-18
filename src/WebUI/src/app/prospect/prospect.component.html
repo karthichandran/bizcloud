@@ -1,0 +1,180 @@
+<div id="user" class="page-layout carded fullwidth inner-scroll">
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg accent"></div>
+  <!-- / TOP BACKGROUND -->
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header accent"
+         fxLayout="row" fxLayoutAlign="space-between center">
+
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+
+        <!--<button mat-icon-button class="mr-16" [routerLink]="">
+          <mat-icon>arrow_back</mat-icon>
+        </button>-->
+
+        <div fxLayout="column" fxLayoutAlign="start start"
+             [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          <div class="h2">
+            Pre Sales
+          </div>
+
+        </div>
+      </div>
+      <!-- / APP TITLE -->
+
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT CARD -->
+    <div class="content-card">
+
+      <!-- CONTENT -->
+      <div class="content">
+
+        <mat-tab-group fxLayout="column" fxFlex (selectedTabChange)="tabChanged($event)">
+          <mat-tab label="Prospect List">
+            <div class="products tab-content p-24 " fusePerfectScrollbar>
+              <div fxLayout="column ">
+                <div fxLayout="row wrap ">
+                
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Search By Customer</mat-label>
+                      <input matInput [(ngModel)]="searchByCustomer">
+                    </mat-form-field>
+                  
+                    <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                      <mat-label>Search by Premises</mat-label>
+                      <mat-select [(ngModel)]="searchByPremises">
+                        <mat-option *ngFor="let option of properties" [value]="option.propertyID">
+                          {{option.addressPremises}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                 
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Search By PAN</mat-label>
+                      <input matInput [(ngModel)]="searchByPan" (keyup)="searchByPan= $event.target.value.toUpperCase()">
+                    </mat-form-field>
+                
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Search By Unit No</mat-label>
+                      <input matInput [(ngModel)]="searchByUnitNo">
+                    </mat-form-field>                 
+                  
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                  <button class="search_button" mat-raised-button type="submit" (click)="search()" color="accent">
+                    Search
+                    <mat-icon class="s-22" style="margin-left:5px">search</mat-icon>
+                  </button>
+                  <button class="search_button" mat-raised-button type="button" color="basic" (click)="reset()">
+                    Reset
+                    <mat-icon class="s-22" style="margin-left:5px">refresh</mat-icon>
+                  </button>
+                </div>
+                <div fxLayout="row wrap">
+                  <div fxFlex>
+                    <grid [dataSet]="rowData" [gridColDef]="columnDef" [rowSelection]="'none'" (editRow)="editRow($event)" (deleteRow)="deleteRow($event)" [showFooter]="true"></grid>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="Prospect Details">
+
+            <div class="order-details tab-content p-24" fusePerfectScrollbar>
+
+              <div class="section pb-48">
+                <div class="h2 mb-24 section-title">Customer Details</div>
+                <div fxLayout="row wrap">
+                  <div fxFlex>
+                    <grid [dataSet]="customerRowData" [gridColDef]="customerColumnDef" [rowSelection]="'none'" ></grid>
+                  </div>
+                </div>
+                <div class="h2 mb-24 section-title">Property Details</div>
+                <form fxLayout="column" [formGroup]="propertyForm">
+                  <div fxLayout="row wrap">
+                    <div fxFlex>
+                      <grid [dataSet]="propertyRowData" [gridColDef]="propertyColumnDef" [rowSelection]="'none'"></grid>
+                    </div>
+                  </div>
+                  <div fxFlex="1 0 auto" fxLayout="row wrap" class="margin-top-20">
+
+                    <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                      <mat-label>Payment Type</mat-label>
+                      <mat-select formControlName="paymentMethodId" required>
+                        <mat-option *ngFor="let option of paymentMethods" [value]="option.paymentMethodID">
+                          {{option.paymentMethod}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error>Payment Type is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                      <mat-label>GST Rate</mat-label>
+                      <mat-select formControlName="gstRateID" required>
+                        <mat-option *ngFor="let option of gstCode" [value]="option.taxCodeId">
+                          {{option.taxName}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error>GST Rate is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                      <mat-label>TDS Rate</mat-label>
+                      <mat-select formControlName="tdsRateID" required>
+                        <mat-option *ngFor="let option of tdsCode" [value]="option.taxCodeId">
+                          {{option.taxName}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error>TDS Rate is required!</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="1 0 auto" fxLayout="row wrap">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Total Unit Cost( Excl GST)</mat-label>
+                      <input matInput type="number" formControlName="totalUnitCost">
+                      <!--<mat-error>Total Unit Cost is required!</mat-error>-->
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Date Of Booking/Agreement</mat-label>
+                      <input matInput [matDatepicker]="agreementDate" formControlName="dateOfAgreement">
+                      <mat-datepicker-toggle matSuffix [for]="agreementDate"></mat-datepicker-toggle>
+                      <mat-datepicker #agreementDate></mat-datepicker>
+                      <!--<mat-error>agreement Date is required!</mat-error>-->
+                    </mat-form-field>
+                    <div fxFlex style="padding-top:15px;">
+                      <label class="radio-label" style="padding-right:10px;">TDS collected by seller</label>
+                      <mat-radio-group aria-label="Select an option" style="align-self:center;" formControlName="tdsCollected">
+                        <mat-radio-button style="padding:0 5px;" value="yes">Yes</mat-radio-button>
+                        <mat-radio-button style="padding:0 5px;" value="no">No</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="center center">
+                    <button class="mr-8" mat-raised-button matStepperPrevious type="button" color="accent" (click)="save();">
+                      Process
+                    </button>
+                  </div>
+                </form>
+
+              </div>
+
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+
+      </div>
+      <!-- / CONTENT -->
+
+    </div>
+    <!-- / CONTENT CARD -->
+
+  </div>
+  <!-- / CENTER -->
+</div>
+
+
+

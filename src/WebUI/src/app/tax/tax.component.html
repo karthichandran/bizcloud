@@ -1,0 +1,180 @@
+<div id="user" class="page-layout carded fullwidth inner-scroll">
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg accent"></div>
+  <!-- / TOP BACKGROUND -->
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header accent"
+         fxLayout="row" fxLayoutAlign="space-between center">
+
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+
+        <!--<button mat-icon-button class="mr-16" [routerLink]="'/apps/e-commerce/orders'">
+          <mat-icon>arrow_back</mat-icon>
+        </button>-->
+
+        <div fxLayout="column" fxLayoutAlign="start start"
+             [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          <div class="h2">
+            Tax
+          </div>
+
+        </div>
+      </div>
+      <!-- / APP TITLE -->
+
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT CARD -->
+    <div class="content-card">
+
+      <!-- CONTENT -->
+      <div class="content">
+
+        <mat-tab-group fxLayout="column" (selectedTabChange)="tabChanged($event)"  fxFlex>
+
+          <mat-tab label="Tax Set-Up" #tab1>
+
+            <div class="order-details tab-content p-24" fusePerfectScrollbar>
+
+              <div class="section pb-48">
+
+                <!-- REACTIVE FORM EXAMPLE -->
+
+                <form class="mat-card mat-elevation-z4 p-24 mr-24" fxLayout="column" name="form" [formGroup]="taxForm">
+
+                  <div class="h2 mb-24">Tax Creation</div>
+
+                  <div fxLayout="row wrap">
+
+                    <div appearance="outline" fxFlex class="pr-4">
+                      <label>Tax Type</label><br />
+                      <mat-radio-group aria-label="Select an option" formControlName="taxTypeId">
+                        <mat-radio-button [checked]="taxForm.value.taxTypeId === 1" value="1">GST</mat-radio-button>
+                        <mat-radio-button [checked]="taxForm.value.taxTypeId === 2" value="2">TDS</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+
+                  </div>
+
+                  <!--<div fxLayout="row wrap" >
+    <mat-form-field appearance="outline" fxFlex="33" class="pr-4">
+      <mat-label>Tax Label</mat-label>
+      <input type="text" matInput formControlName="taxLabel" required>
+      <mat-error>Tax Label is required!</mat-error>
+    </mat-form-field>
+  </div>-->
+                  <div fxLayout="row wrap">
+                    <mat-form-field appearance="outline" fxFlex class="pr-4">
+                      <mat-label>Tax Name</mat-label>
+                      <input type="text" matInput formControlName="taxName" required>
+                      <mat-error>Tax Name is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex class="pr-4">
+                      <mat-label>Tax Value</mat-label>
+                      <input type="text" matInput formControlName="taxValue" required>
+                      <mat-error>Tax Value is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex class="pr-4">
+                      <mat-label>Tax Code</mat-label>
+                      <input type="text" matInput formControlName="taxCodeId">
+                      
+                    </mat-form-field>
+                  </div>
+                  <div fxLayout="row wrap">
+                    <mat-form-field appearance="outline" class="padding-left-right-3" fxFlex>
+                      <mat-label>Effective Start Date</mat-label>
+                      <input matInput [matDatepicker]="effectiveStartDate" formControlName="effectiveStartDate" required>
+                      <mat-datepicker-toggle matSuffix [for]="effectiveStartDate"></mat-datepicker-toggle>
+                      <mat-datepicker #effectiveStartDate></mat-datepicker>
+                      <mat-error>Efective Start Date is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="padding-left-right-3" fxFlex>
+                      <mat-label>Effective End Date</mat-label>
+                      <input matInput [matDatepicker]="effectiveEndDate" formControlName="effectiveEndDate" required>
+                      <mat-datepicker-toggle matSuffix [for]="effectiveEndDate"></mat-datepicker-toggle>
+                      <mat-datepicker #effectiveEndDate></mat-datepicker>
+                      <mat-error>Effective End Date is required!</mat-error>                 
+                    </mat-form-field>
+
+                  </div>
+
+                  <div fxLayout="row" fxLayoutAlign="center center">
+                    <button class="mr-8" mat-raised-button type="submit" (click)="save()" color="accent" [disabled]="!showButtons">
+                      Save
+                    </button>
+                    <button class="mr-8" mat-raised-button type="submit" *ngIf="taxForm.value.taxID!=''" (click)="copy()" color="accent" [disabled]="!showButtons">
+                      Copy
+                    </button>
+                    <button mat-raised-button type="button" color="basic" (click)="clear()">
+                      Clear
+                    </button>
+                  </div>
+
+                </form>
+
+              </div>
+
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Taxes List">
+            <div class="products tab-content p-24 " fusePerfectScrollbar>
+              <div fxLayout="column ">
+                <form name="searchForm" fxLayout="row wrap ">
+                  <div fxFlex>
+                    <mat-form-field appearance="outline" fxFlex class="search-textbox">
+                      <mat-label>Tax Name</mat-label>
+                      <input matInput name="searchByTaxName" [(ngModel)]="searchByTaxName">
+                    </mat-form-field>
+                  </div>
+                  <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                    <mat-label>Search Option</mat-label>
+                    <mat-select name="searchByTaxType" [(ngModel)]="searchByTaxType">
+                      <mat-option *ngFor="let option of taxTypesDDl" [value]="option.taxTypeId">
+                        {{option.taxTypeDesc}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div fxFlex>
+                    <button class="search_button" mat-raised-button type="submit" (click)="search()" color="accent">
+                      Search
+                      <mat-icon class="s-22" style="margin-left:5px">search</mat-icon>
+                    </button>
+                    <button class="search_button" mat-raised-button type="button" color="basic" (click)="reset()">                    
+                      Reset
+                      <mat-icon class="s-22" style="margin-left:5px">refresh</mat-icon>
+                    </button>
+                  </div>
+
+                </form>   
+
+                <div fxLayout="row wrap">
+                  <div fxFlex>
+                    <grid-group *ngIf="showListGrid" [dataSet]="rowData" [gridColDef]="columnDef" [rowSelection]="'undefined'" (editRow)="editRow($event)" (deleteRow)="deleteRow($event)"></grid-group>
+                  </div>
+                </div>
+              </div>
+              <!--<grid [dataSet]="rowData" [gridColDef]="columnDef" (selectedRows)="selectedRows($event)"></grid>-->
+
+            </div>
+          </mat-tab>
+
+        </mat-tab-group>
+
+      </div>
+      <!-- / CONTENT -->
+
+    </div>
+    <!-- / CONTENT CARD -->
+
+  </div>
+  <!-- / CENTER -->
+</div>
+
+
+

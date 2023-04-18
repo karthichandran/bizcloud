@@ -1,0 +1,235 @@
+<div id="user" class="page-layout carded fullwidth inner-scroll">
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg accent"></div>
+  <!-- / TOP BACKGROUND -->
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header accent"
+         fxLayout="row" fxLayoutAlign="space-between center">
+
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+
+        <!--<button mat-icon-button class="mr-16" [routerLink]="'/apps/e-commerce/orders'">
+          <mat-icon>arrow_back</mat-icon>
+        </button>-->
+
+        <div fxLayout="column" fxLayoutAlign="start start"
+             [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          <div class="h2">
+            Customer Billing
+          </div>
+
+        </div>
+      </div>
+      <!-- / APP TITLE -->
+
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT CARD -->
+    <div class="content-card">
+      <mat-tab-group fxLayout="column" fxFlex (selectedTabChange)="tabChanged($event)" style="height:100%;">
+        <mat-tab label="Customer Billing List">
+          <div class="products tab-content p-24 " fusePerfectScrollbar>
+
+            <div fxLayout="column ">
+              <form name="searchForm" [formGroup]="billFilter">
+                <div fxLayout="row wrap ">
+                  <div fxFlex>
+                    <mat-form-field appearance="outline" fxFlex class="search-textbox">
+                      <mat-label>Customer Name</mat-label>
+                      <input name="searchByCustomerName" matInput formControlName="searchByCustomerName">
+                    </mat-form-field>
+                  </div>
+                  <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                    <mat-label>Property</mat-label>
+                    <mat-select name="searchByPropertyID" formControlName="searchByPropertyID">
+                      <mat-option *ngFor="let option of propertyDDl" [value]="option.propertyID">
+                        {{option.addressPremises}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div fxFlex>
+                    <mat-form-field appearance="outline" fxFlex class="search-textbox">
+                      <mat-label>Premises</mat-label>
+                      <input name="searchByPremises" matInput formControlName="searchByPremises">
+                    </mat-form-field>
+                  </div>              
+
+                </div>
+                <div fxLayout="row wrap ">
+                  <mat-form-field appearance="outline" fxFlex class="search-textbox">
+                    <mat-label>Unit No</mat-label>
+                    <input matInput name="searchByUnit" formControlName="searchByUnit" type="number">
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                    <mat-label>From Date </mat-label>
+                    <input matInput [matDatepicker]="fromDate" formControlName="fromDate" (dateChange)="validateDate()">
+                    <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                    <mat-datepicker #fromDate></mat-datepicker>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                    <mat-label>To Date</mat-label>
+                    <input matInput [matDatepicker]="toDate" formControlName="toDate" (dateChange)="validateDate()">
+                    <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                    <mat-datepicker #toDate></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div fxLayout="row wrap">
+
+                  <div fxFlex fxLayoutAlign="center center">
+                    <button class="search_button" mat-raised-button type="submit" (click)="search()" color="accent">
+                      Search
+                      <mat-icon class="s-22" style="margin-left:5px">search</mat-icon>
+                    </button>
+                    <button class="search_button" mat-raised-button type="button" color="basic" (click)="reset()">
+                      Reset
+                      <mat-icon class="s-22" style="margin-left:5px">refresh</mat-icon>
+                    </button>
+                    <button  class="search_button pink" mat-raised-button (click)="download()">
+                      <span>Download </span>
+                      <mat-icon class="s-22" style="margin-left:5px">get_app</mat-icon>
+                    </button>
+                  </div>
+
+                </div>
+              </form>
+              <div fxLayout="row wrap">
+                <div fxFlex>
+                  <grid [dataSet]="rowData" [gridColDef]="columnDef" [rowSelection]="'undefined'" [showFooter]="true" (editRow)="editRow($event)" (deleteRow)="deleteRow($event)" (addRow)="addNewBill($event)"></grid>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </mat-tab>
+        <!--<mat-tab label="Manage Customer billing" #tab1>
+          <div fusePerfectScrollbar>
+
+            <form fxLayout="column" [formGroup]="customerBillingForm" class="padding-top-10">
+              <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-bottom-5">
+
+                <div fxFlex><span class="float-right padding-left-right-5"> Name of the premises : </span> </div>
+                <div fxFlex><span class="padding-left-right-5 bill-label"> {{customerBillingForm.get('propertyPremises').value}}</span> </div>
+
+              </div>
+              <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-bottom-5">
+
+                <div fxFlex><span class="float-right padding-left-right-5">Unit No :</span> </div>
+                <div fxFlex> <span class=" padding-left-right-5 bill-label">{{customerBillingForm.get('unitNo').value}}</span> </div>
+
+              </div>
+              <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-bottom-5">
+
+                <div fxFlex><span class="float-right padding-left-right-5"> Customer Name : </span> </div>
+                <div fxFlex> <span class=" padding-left-right-5 bill-label">{{customerBillingForm.get('customerName').value}} </span></div>
+
+              </div>
+              <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-bottom-5">
+
+                <div fxFlex><span class="float-right padding-left-right-5"> Co-Owner : </span> </div>
+                <div fxFlex class="bill-label padding-left-right-5">
+                  <mat-radio-group aria-label="Select an option" style="align-self:center;" [disabled]="true" formControlName="coOwner">
+                    <mat-radio-button value="yes">Yes</mat-radio-button>
+                    <mat-radio-button value="no">No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+
+
+
+              <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-10">
+
+                <mat-form-field class="selection-fix padding-left-right-3" appearance="outline" fxFlex>
+                  <mat-label>Payment method</mat-label>
+                  <mat-select formControlName="paymentMethodID" (selectionChange)="onChangePaymentMethod($event)">
+                    <mat-option *ngFor="let option of paymentMethods" [value]="option.paymentMethodID">
+                      {{option.paymentMethod}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="padding-left-right-3" fxFlex>
+                  <mat-label>No of Installment</mat-label>
+                  <input matInput type="number" formControlName="noOfInstallments" (blur)="onChangeInstallmentAndCost()">
+                  <mat-error>No of Installment is required!</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="padding-left-right-3" fxFlex>
+                  <mat-label>Charge/Installment</mat-label>
+                  <input matInput type="number" formControlName="costPerInstallment" (blur)="onChangeInstallmentAndCost()">
+                  <mat-error>Charge/Installment is required!</mat-error>
+                </mat-form-field>
+
+              </div>
+
+              <div fxFlex="1 0 auto" fxLayout="row wrap">
+                <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                  <mat-label>Date of Billing</mat-label>
+                  <input matInput [matDatepicker]="billDate" formControlName="billDate">
+                  <mat-datepicker-toggle matSuffix [for]="billDate"></mat-datepicker-toggle>
+                  <mat-datepicker #billDate></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="selection-fix padding-left-right-3" appearance="outline" fxFlex>
+                  <mat-label>Payable By</mat-label>
+                  <mat-select formControlName="payableBy">
+                    <mat-option *ngFor="let option of payableBy" [value]="option.id">
+                      {{option.description}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="padding-left-right-3" fxFlex>
+                  <mat-label>Amount</mat-label>
+                  <input matInput type="number" formControlName="amount">
+                  <mat-error>Amount is required!</mat-error>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-10">
+                <mat-form-field class="selection-fix padding-left-right-3" appearance="outline" fxFlex>
+                  <mat-label>GST Rate</mat-label>
+                  <mat-select formControlName="gstRate">
+                    <mat-option *ngFor="let option of gstCodes" [value]="option.taxValue">
+                      {{option.taxName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="padding-left-right-3" fxFlex>
+                  <mat-label>GST Amount</mat-label>
+                  <input matInput type="number" formControlName="gstAmount">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="padding-left-right-3" fxFlex>
+                  <mat-label>Total Payable</mat-label>
+                  <input matInput type="number" formControlName="totalPayable">
+                </mat-form-field>
+              </div>
+
+
+              <div fxLayout="row" fxLayoutAlign="center center" class="padding-top-bottom-10 ">
+
+                <button mat-raised-button type="button" class="mr-16" (click)="save()" color="accent">
+                  Save
+                </button>
+                <button mat-raised-button type="button" class="ml-16" (click)="clear()" color="basic">
+                  Clear
+                </button>
+
+              </div>
+
+            </form>
+
+          </div>
+        </mat-tab>-->
+      </mat-tab-group>
+    </div>
+    <!-- / CONTENT CARD -->
+
+  </div>
+  <!-- / CENTER -->
+</div>
+
+
+

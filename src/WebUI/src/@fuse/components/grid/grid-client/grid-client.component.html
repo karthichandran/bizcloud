@@ -1,0 +1,213 @@
+<div class="content"  [style.width.px]="containerWidth">
+  <ngx-datatable #table class="material"
+                 [rows]="rowData"
+                 [loadingIndicator]="loadingIndicator"
+                 [columnMode]="'force'"
+                 [headerHeight]="48"
+                 [footerHeight]="56"
+                 [rowHeight]="'auto'"
+                 [scrollbarH]="true"
+                 [reorderable]="reorderable"
+                 [selectionType]="'undefined'"
+                 [limit]="10">
+
+    <!-- Column 0-->
+    <ngx-datatable-column name="ownershipID" prop="ownershipID" [maxWidth]="50">
+      <ng-template ngx-datatable-header-template let-value="value">
+
+      </ng-template>
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+        <mat-icon class="active-icon pink s-25 grid-action" (click)="edit(row)">create</mat-icon>
+      </ng-template>
+
+    </ngx-datatable-column>
+
+    <!-- <ngx-datatable-column name="ownershipID" prop="ownershipID" [maxWidth]="50">
+      <ng-template ngx-datatable-header-template let-value="value">
+
+      </ng-template>
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+        <mat-icon class="active-icon orange s-25 grid-action" style="color: #FFF !important;" (click)="email(row)">email</mat-icon>
+      </ng-template>
+    </ngx-datatable-column> -->
+    <!-- Column 1-->
+    <ngx-datatable-column name="dateOfSubmission" prop="dateOfSubmission" [sortable]="true">
+      <ng-template ngx-datatable-header-template let-value="value">
+        <span class="header-name" matTooltip="Date of Submission" [matTooltipPosition]="'above'">Date of Submission </span>
+      </ng-template>
+
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+        <span class="label"> {{ value }} </span>
+      </ng-template>
+
+    </ngx-datatable-column>
+    <!-- Column 2-->
+    <ngx-datatable-column name="clientName" prop="clientName" [minWidth]="200" [sortable]="true">
+      <ng-template ngx-datatable-header-template let-value="value">
+        <span class="header-name" matTooltip="Client Name" [matTooltipPosition]="'above'">Client Name </span>
+      </ng-template>
+
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+        <span class="label" *ngFor="let val of value"> {{ val.name }} </span>
+      </ng-template>
+
+    </ngx-datatable-column>
+     <!-- Column 3-->
+     <ngx-datatable-column name="IncomeTaxPassword" prop="incomeTaxPassword" [minWidth]="200" [sortable]="true">
+      <ng-template ngx-datatable-header-template let-value="value">
+        <span class="header-name" matTooltip="IT Password" [matTooltipPosition]="'above'">IT Password </span>
+      </ng-template>
+
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+        <span class="label"> {{ value }} </span>
+      </ng-template>
+
+    </ngx-datatable-column>
+    <!-- Column 3-->
+
+    <ngx-datatable-column name="panNumber" prop="panNumber" [sortable]="true">
+      <ng-template ngx-datatable-header-template let-value="value">
+        <span class="header-name" matTooltip="PAN No" [matTooltipPosition]="'above'">PAN No</span>
+      </ng-template>
+
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+        <span class="label" *ngFor="let val of value"> {{ val.name }} </span>
+      </ng-template>
+
+    </ngx-datatable-column>
+    <!-- Column 4-->
+    <ngx-datatable-column name="premises" prop="propertyPremises" [sortable]="true">
+      <ng-template ngx-datatable-header-template let-value="value">
+        <span class="header-name" matTooltip="Premises" [matTooltipPosition]="'above'">Premises </span>
+      </ng-template>
+      <ng-template ngx-datatable-cell-template let-rowindex="rowindex" let-value="value" let-row="row" let-isselected="isselected" let-oncheckboxchangefn="oncheckboxchangefn">
+        <span class="label"> {{ value }} </span>
+      </ng-template>
+    </ngx-datatable-column>
+    <!-- Column 5-->
+    <ngx-datatable-column name="unitNo" prop="unitNo" [sortable]="true">
+      <ng-template ngx-datatable-header-template let-value="value">
+        <span class="header-name" matTooltip="Unit No" [matTooltipPosition]="'above'">Unit No </span>
+      </ng-template>
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+        <span class="label"> {{ value }} </span>
+      </ng-template>
+
+    </ngx-datatable-column>
+
+    <!-- Column 6-->
+    <ngx-datatable-column name="remarks" prop="remarks" [minWidth]="300" [sortable]="true">
+      <ng-template ngx-datatable-header-template let-value="value">
+        <span class="header-name" matTooltip="Remarks" [matTooltipPosition]="'above'">Remarks </span>
+      </ng-template>
+
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+
+        <span title="Double click to edit textbox" class="label"
+              (click)="showInline(rowIndex +'remarks')"
+              *ngIf="!editing[rowIndex + 'remarks']">
+          {{ value }}
+        </span>
+        <!--<input autofocus matInput class="grid-textbox"
+        (blur)="updateValue($event, 'remarks', rowIndex)"
+        *ngIf="editing[rowIndex + 'remarks']"
+        type="text"
+        [value]="value" />-->
+        <textarea class="grid-textbox"
+                  placeholder="Remarks"
+                  *ngIf="editing[rowIndex + 'remarks']"
+                  matInput
+                  [value]="value"
+                  (blur)="updateRemark($event,trigger, 'remarks', rowIndex)"
+                  #trigger="matAutocompleteTrigger"
+                  [matAutocomplete]="auto"></textarea>
+        <!--<input type="text" class="grid-textbox"
+               placeholder="Remarks"
+               *ngIf="editing[rowIndex + 'remarks']"
+               matInput
+               [value]="value"
+               (blur)="updateRemark($event,trigger, 'remarks', rowIndex)"
+               #trigger="matAutocompleteTrigger"
+               [matAutocomplete]="auto">-->
+
+        <mat-autocomplete #auto="matAutocomplete" [panelWidth]="auto">
+          <mat-option *ngFor="let option of remarks" [value]="option.remarksText">
+            {{option.remarksText}}
+          </mat-option>
+        </mat-autocomplete>
+        <!--<mat-autocomplete #auto="matAutocomplete" [panelWidth]="auto" (optionSelected)="updateRemark($event.option,'remarks',rowIndex)">
+          <mat-option *ngFor="let option of remarks" [value]="option.remarksText">
+            {{option.remarksText}}
+          </mat-option>
+        </mat-autocomplete>-->
+      </ng-template>     
+    </ngx-datatable-column>
+
+    <!-- Column 7-->
+    <ngx-datatable-column name="status" prop="statusTypeID" [sortable]="true">
+      <ng-template ngx-datatable-header-template let-value="value">
+        <span class="header-name" matTooltip="Status" [matTooltipPosition]="'above'">Status </span>
+      </ng-template>
+
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+        <span title="Double click to edit textbox" class="label"
+              (click)="showInline(rowIndex +'statusTypeID')"
+              *ngIf="!editing[rowIndex +'statusTypeID']">
+          {{ getValue(value,statusDDl,'id','description') }}
+        </span>
+        <!--<select *ngIf="editing[rowIndex + 'statusID']"
+                (blur)="editing[rowIndex + 'statusID'] = false"
+                (change)="updateValue($event, 'statusID', rowIndex)"
+                [value]="value">
+          <option value="{{opt.id}}" *ngFor="let opt of statusDDl">{{opt.description}}</option>
+
+        </select>-->
+        <mat-select *ngIf="editing[rowIndex + 'statusTypeID']" style="background-color:#fff;" class="grid-selection"
+                    (selectionChange)="updateValue($event, 'statusTypeID', rowIndex)" [value]="value">
+          <mat-option *ngFor="let opt of statusDDl" [value]="opt.id">
+            {{opt.description}}
+          </mat-option>
+        </mat-select>
+      </ng-template>
+
+    </ngx-datatable-column>
+    <!-- Column 8-->
+    <ngx-datatable-column name="payment" prop="paymentMethodId" [sortable]="true">
+      <ng-template ngx-datatable-header-template let-value="value">
+        <span class="header-name" matTooltip="Payment Method" [matTooltipPosition]="'above'">Payment Method </span>
+      </ng-template>
+
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+        <span title="Double click to edit textbox" class="label"
+              *ngIf="!editing[rowIndex + 'paymentMethod']">
+          {{ getValue(value,paymentMethods,'paymentMethodID','paymentMethod') }}
+        </span>
+      </ng-template>
+
+    </ngx-datatable-column>
+    <!-- Column 9-->
+    <ngx-datatable-column name="amount" prop="totalUnitCost" [sortable]="true">
+      <ng-template ngx-datatable-header-template let-value="value">
+        <span class="header-name" matTooltip="Amount" [matTooltipPosition]="'above'">Amount </span>
+      </ng-template>
+
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+        <span class="label"> {{ value }} </span>
+      </ng-template>
+
+    </ngx-datatable-column>
+    <!-- Column 9-->
+    <ngx-datatable-column name="ownershipID" prop="ownershipID" [maxWidth]="50" >
+      <ng-template ngx-datatable-header-template let-value="value">
+        <span class="header-name"> </span>
+      </ng-template>
+
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+        <mat-icon class="active-icon green-600 s-25 grid-action" (click)="save(value,row)">check</mat-icon>
+      </ng-template>
+
+    </ngx-datatable-column>
+
+  </ngx-datatable>
+
+  </div>

@@ -1,0 +1,156 @@
+
+@import "@fuse/scss/fuse";
+.message-box{
+    margin-bottom:10px;
+}
+
+.message-box:hover {
+  background-color:aqua;
+  cursor:pointer;
+}
+
+.label{
+    margin-bottom:5px;
+    padding-left:10px;
+}
+
+.percentage-label {
+  margin-bottom: 5px;
+  padding-left: 10px;
+  font-size: large;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  color: #8a8787;
+}
+
+.mat-radio-button {
+  margin: 15px 12px;
+}
+
+.percentage-field {
+  height: 30px;
+  border-radius: 3px;
+  border: solid 1px #c3c0c0;
+}
+
+.percentage-field:focus {
+  border: solid 1px #898989;
+  margin: 3px;
+}
+
+.add-file-button {
+  margin-bottom: 20px;
+}
+
+.sellers {
+  border: solid 1px #ebeff3;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+
+
+  .header {
+    background-color: #ebeff3;
+    height: 45px;
+
+    span {
+      padding-left: 10px;
+      font-weight: 800;
+      display: flex;
+      justify-content: center;
+      align-self: center;
+      color: #039be5;
+      font-size: large;
+    }
+  }
+}
+
+
+
+#academy-courses {   
+
+    .courses {
+      width: 100%;
+      /*max-width: 1040px;*/
+      margin: 0 auto;
+
+      .no-courses {
+        font-size: 24px;
+        margin: 24px 0;
+        text-align: center;
+      }
+
+      .course {
+        padding: 16px;
+
+        &:hover {
+
+          .course-content {
+            border: none;
+            @include mat-elevation(12);
+          }
+        }
+
+        .course-content {
+          min-height: 30px;
+          border-radius: 4px;
+          overflow: hidden;
+          transition: box-shadow 200ms ease-in-out;
+          @include mat-elevation(1);
+
+          .header {
+            padding: 12px 24px;
+            height: 34px !important;
+            min-height: 54px !important;
+            max-height: 64px !important;           
+            color:#fff;
+            &.android-bg {
+              background: mat-color($mat-green, 500);
+            }
+           
+            .category {
+              text-transform: capitalize;
+              text-align: left;
+              font-weight: 600;
+            }
+
+            .length {
+
+              .length-icon {
+                margin-right: 8px;
+              }
+
+              .min {
+                font-size: 16px;
+              }
+            }
+          }
+
+          .content {
+            padding: 24px;
+
+            .h1 {
+              font-size: 16px;
+              text-align: center;
+            }
+
+            .updated {
+              font-size: 13px;
+              font-weight: 600;
+              margin-top: 4px;
+            }
+          }
+
+        }
+      }
+    
+  }
+}
+.search_button {
+  margin: 8px 0 8px 10px;
+}
+
+.search-textbox{
+    margin:0 3px;
+}

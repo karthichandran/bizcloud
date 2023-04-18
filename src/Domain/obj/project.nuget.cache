@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "kC8emdu7w+hRTkOmPpEBKilSZYSZTVCNcpDx6D/exCeCwfrsB2AkkOqLhtwq2OrpVxvhp0glAnzvr/6VmU6qAQ==",
+  "success": true,
+  "projectFilePath": "D:\\dev\\projects\\tds-Biz\\src\\Domain\\Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\madhu\\.nuget\\packages\\system.componentmodel.annotations\\4.7.0\\system.componentmodel.annotations.4.7.0.nupkg.sha512"
+  ],
+  "logs": []
+}

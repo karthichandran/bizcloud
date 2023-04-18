@@ -1,0 +1,124 @@
+
+<h2 mat-dialog-title>Customer Billing</h2>
+
+<mat-dialog-content>
+
+  <form fxLayout="column" [formGroup]="customerBillingForm">
+    <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-bottom-5">
+
+      <div fxFlex><span class="float-right padding-left-right-5"> Name of the premises : </span> </div>
+      <div fxFlex><span class="padding-left-right-5 bill-label"> {{customerBillingForm.get('propertyPremises').value}}</span> </div>
+
+    </div>
+    <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-bottom-5">
+
+      <div fxFlex><span class="float-right padding-left-right-5">Unit No :</span> </div>
+      <div fxFlex> <span class=" padding-left-right-5 bill-label">{{customerBillingForm.get('unitNo').value}}</span> </div>
+
+    </div> <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-bottom-5">
+
+      <div fxFlex><span class="float-right padding-left-right-5"> Customer Name : </span> </div>
+      <div fxFlex> <span class=" padding-left-right-5 bill-label">{{customerBillingForm.get('customerName').value}} </span></div>
+
+    </div>
+    <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-bottom-5">
+
+      <div fxFlex><span class="float-right padding-left-right-5"> Co-Owner : </span> </div>
+      <div fxFlex class="bill-label padding-left-right-5">
+        <mat-radio-group aria-label="Select an option" style="align-self:center;" [disabled]="true" formControlName="coOwner">
+          <mat-radio-button value="yes">Yes</mat-radio-button>
+          <mat-radio-button value="no">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+    </div>
+   
+    <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-10">
+
+      <mat-form-field class="selection-fix padding-left-right-3" appearance="outline" fxFlex>
+        <mat-label>Payment method</mat-label>
+        <mat-select formControlName="paymentMethodID" (selectionChange)="onChangePaymentMethod($event)">
+          <mat-option *ngFor="let option of paymentMethods" [value]="option.paymentMethodID">
+            {{option.paymentMethod}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline"  class="padding-left-right-3" fxFlex>
+        <mat-label>No of Installment</mat-label>
+        <input matInput type="number" formControlName="noOfInstallments" (blur)="onChangeInstallmentAndCost()">
+        <mat-error>No of Installment is required!</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline"  class="padding-left-right-3" fxFlex>
+        <mat-label>Charge/Installment</mat-label>
+        <input matInput type="number" formControlName="costPerInstallment" (blur)="onChangeInstallmentAndCost()">
+        <mat-error>Charge/Installment is required!</mat-error>
+      </mat-form-field>
+
+    </div>
+    <div fxFlex="1 0 auto" fxLayout="row wrap">
+      <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+        <mat-label>Date of Billing</mat-label>
+        <input matInput [matDatepicker]="billDate" formControlName="billDate">
+        <mat-datepicker-toggle matSuffix [for]="billDate"></mat-datepicker-toggle>
+        <mat-datepicker #billDate></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="selection-fix padding-left-right-3" appearance="outline" fxFlex>
+        <mat-label>Payable By</mat-label>
+        <mat-select formControlName="payableBy">
+          <mat-option *ngFor="let option of payableBy" [value]="option.id">
+            {{option.description}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="padding-left-right-3" fxFlex>
+        <mat-label>Amount</mat-label>
+        <input matInput type="number" formControlName="amount">
+        <mat-error>Amount is required!</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-10">
+      <mat-form-field class="selection-fix padding-left-right-3" appearance="outline" fxFlex>
+        <mat-label>GST Rate</mat-label>
+        <mat-select formControlName="gstRate">
+          <mat-option *ngFor="let option of gstCodes" [value]="option.taxValue">
+            {{option.taxName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="padding-left-right-3" fxFlex>
+        <mat-label>GST Amount</mat-label>
+        <input matInput type="number" formControlName="gstAmount">
+        <!--<mat-error>Total Unit Cost is required!</mat-error>-->
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="padding-left-right-3" fxFlex>
+        <mat-label>Total Payable</mat-label>
+        <input matInput type="number" formControlName="totalPayable">
+        <!--<mat-error>Total Unit Cost is required!</mat-error>-->
+      </mat-form-field>
+    </div>
+    <!--<div fxFlex="1 0 auto" fxLayout="row wrap">
+      <mat-form-field appearance="outline" class="padding-left-right-3" fxFlex>
+        <mat-label>Amount received</mat-label>
+        <input matInput type="number" formControlName="amountReceived">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="padding-left-right-3" fxFlex>
+        <mat-label>Date Of Receipt</mat-label>
+        <input matInput [matDatepicker]="agreementDate" formControlName="dateOfReceipt">
+        <mat-datepicker-toggle matSuffix [for]="agreementDate"></mat-datepicker-toggle>
+        <mat-datepicker #agreementDate></mat-datepicker>
+      </mat-form-field>
+    </div>-->
+
+  </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions style="justify-content:center;" class="padding-top-bottom-10">
+  <button mat-raised-button class="padding-left-right-5" type="button" color="accent" (click)="save()">Save</button>
+  <!--<button mat-raised-button class="padding-left-right-10" type="button" color="accent" (click)="save()">Save & E-mail</button>-->
+  <button mat-raised-button class="padding-left-right-5" type="button" (click)="close()">Close</button>
+
+</mat-dialog-actions>
+

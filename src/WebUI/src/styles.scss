@@ -1,0 +1,152 @@
+// Import Fuse core library
+@import "@fuse/scss/core";
+
+// Import app.theme.scss
+@import "app/app.theme";
+
+
+// Import toastr
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+//@import '~ngx-toastr/toastr-bs4-alert';  // Node : this one is commented due to update toastr
+
+/*@import “~ngx-toastr/toastr.css”;*/
+
+.toast-container .ngx-toastr {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.mat-tab-label{
+    font-weight:700;
+}
+
+/*Reducing size color-profile controls*/
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0.5em 0 0.5em 0 !important;
+}
+.mat-form-field-label-wrapper {
+  top: -1.4em !important;
+  padding-top: 0.84375em;
+}
+
+.padding-top-10{
+    padding-top:10px;
+}
+
+.padding-top-5 {
+  padding-top: 5px;
+}
+.padding-right-5{
+    padding-right:5px;
+}
+
+.padding-5{
+    padding:5px;
+}
+.padding-bottom-10{
+    padding-bottom:10px;
+}
+.padding-bottom-15 {
+  padding-bottom: 15px;
+}
+.padding-left-right-5 {
+  padding:0 5px !important;
+}
+.padding-left-right-10 {
+  padding: 0 10px !important;
+}
+.padding-left-right-3 {
+  padding: 0 3px !important;
+}
+
+.padding-top-bottom-5{
+    padding:5px 0;
+}
+.padding-top-bottom-10 {
+  padding: 10px 0;
+}
+.margin-top-10{
+    margin-top:10px;
+}
+.margin-top-20 {
+  margin-top: 20px;
+}
+.margin-top-5 {
+  margin-top: 5px !important;
+}
+.mb-10 {
+  margin-bottom: 10px !important;
+}
+.margin-left-right-5 {
+  margin: 0 5px !important;
+}
+
+.float-right{
+    float:right;
+}
+
+.ngx-datatable.material .datatable-body .datatable-row-wrapper .datatable-body-cell {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  min-height: 48px;
+  transition: none;
+  padding: 0 8px;
+  overflow: hidden;
+}
+
+.ngx-datatable.material .datatable-header .datatable-header-cell {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  min-height: 48px;
+  font-size: 13px;
+  padding: 0 8px;
+}
+
+
+.mat-step-icon-selected {
+  background-color: #f90e85 !important;
+}
+
+@media screen and (min-width: 600px) and (max-width: 1279px) {
+  .mat-form-field {
+    font: 400 12px/1.125 Muli, Helvetica Neue, Arial, sans-serif;
+    letter-spacing: normal;
+  }
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1439px) {
+  .mat-form-field {
+    font: 400 13px/1.125 Muli, Helvetica Neue, Arial, sans-serif;
+    letter-spacing: normal;
+  }
+}
+@media screen and (min-width: 1440px) and (max-width: 1919px) {
+  .mat-form-field {
+    font: 400 14px/1.125 Muli, Helvetica Neue, Arial, sans-serif;
+    letter-spacing: normal;
+  }
+}
+@media screen and  (min-width: 1920px) {
+  .mat-form-field {
+    font: 400 15px/1.125 Muli, Helvetica Neue, Arial, sans-serif;
+    letter-spacing: normal;
+  }
+}
+@media screen and (min-width: 600px) and (max-width: 959px) {
+  /*.mat-form-field {
+    font: 400 12px/1.125 Muli, Helvetica Neue, Arial, sans-serif;
+    letter-spacing: normal;
+  }*/
+}
+
+
+.search-textbox {
+  margin: 0 3px;
+}
+.search_button {
+  margin: 8px 0 8px 10px !important;
+}

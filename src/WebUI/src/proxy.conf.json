@@ -1,0 +1,10 @@
+{
+  "/api": {
+    "target": "http://leansyshost-001-site3.itempurl.com",
+    "secure": false,
+    "pathRewrite": {
+      "^/api": ""
+    },
+    "logLevel": "debug"
+  }
+}

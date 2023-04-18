@@ -1,0 +1,219 @@
+<div id="user" class="page-layout carded fullwidth inner-scroll">
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg accent"></div>
+  <!-- / TOP BACKGROUND -->
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header accent"
+         fxLayout="row" fxLayoutAlign="space-between center">
+
+      <!-- APP TITLE -->
+      <div fxLayout="row" fxLayoutAlign="start center">
+
+        <!--<button mat-icon-button class="mr-16" [routerLink]="'/apps/e-commerce/orders'">
+          <mat-icon>arrow_back</mat-icon>
+        </button>-->
+
+        <div fxLayout="column" fxLayoutAlign="start start"
+             [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          <div class="h2">
+            Seller
+          </div>
+
+        </div>
+      </div>
+      <!-- / APP TITLE -->
+
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT CARD -->
+    <div class="content-card">
+
+      <!-- CONTENT -->
+      <div class="content">
+
+        <mat-tab-group fxLayout="column" fxFlex (selectedTabChange)="tabChanged($event)">
+
+          <mat-tab label="Manage Seller" #tab1>
+
+            <div class="order-details tab-content p-24" fusePerfectScrollbar>
+
+              <div class="section pb-48">
+
+                <!-- REACTIVE FORM EXAMPLE -->
+                <div class="mat-card mat-elevation-z4 p-24 mr-24" fxLayout="column" fxLayoutAlign="start">
+                  <form name="form" [formGroup]="form">
+                    <!--<div *ngFor="let seller of sellers">
+                      <div class="message-box info" (click)="showSeller()">
+                        {{seller.name}}
+                      </div>
+                    </div>-->
+                    <div class="h2 mb-24">Seller Details</div>
+                    <div fxLayout="row wrap" fxLayoutAlign="start center">
+                      <div fxLayout="column" fxFlex>
+                        <!--<label class="label font-weight-200">Name of the Seller(builder)(As per PAN)</label>-->
+                        <mat-form-field appearance="outline" fxFlex="33" class="pr-4">
+                          <mat-label>Name of the Seller(builder)(As per PAN)</mat-label>
+                          <input type="text" matInput formControlName="sellerName" required>
+                          <mat-error>Name of the builder is required!</mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div fxLayout="column" fxFlex>
+                        <!--<label class="label font-weight-200">Name of the Premises/Building/Village</label>-->
+                        <mat-form-field appearance="outline" fxFlex="33" class="pr-4">
+                          <mat-label>Name of the Premises/Building/Village</mat-label>
+                          <input type="text" matInput formControlName="addressPremises" >
+                          <!--<mat-error>Name of the premises is required!</mat-error>-->
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div fxLayout="row wrap" fxLayoutAlign="start center">
+                      <div fxLayout="column" fxFlex>
+                        <!--<label class="label font-weight-200">Flat/Door/Block No</label>-->
+                        <mat-form-field appearance="outline" fxFlex="33" class="pr-4">
+                          <mat-label>Flat/Door/Block No</mat-label>
+                          <input type="text" matInput formControlName="adressLine1" required>
+                          <mat-error>Flat No. is required!</mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div fxLayout="column" fxFlex>
+                        <!--<label class="label font-weight-200">Road/Street/Lane</label>-->
+                        <mat-form-field appearance="outline" fxFlex="33" class="pr-4">
+                          <mat-label>Road/Street/Lane</mat-label>
+                          <input type="text" matInput formControlName="addressLine2">
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div fxLayout="row wrap" fxLayoutAlign="start center">
+                      <mat-form-field appearance="outline" fxFlex class="pr-4">
+                        <mat-label>City/District</mat-label>
+                        <input type="text" matInput formControlName="city" required>
+                        <mat-error>City/District is required!</mat-error>
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex class="pr-4">
+                        <mat-label>State</mat-label>
+                        <mat-select formControlName="stateID" required>
+                          <mat-option *ngFor="let option of states" [value]="option.stateID">
+                            {{option.state}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error>State is required!</mat-error>
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex class="pr-4">
+                        <mat-label>Pin Code</mat-label>
+                        <input type="text" matInput formControlName="pinCode" required>
+                        <mat-error>PinCode is required!</mat-error>
+                      </mat-form-field>
+
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutAlign="start center">
+
+                      <div appearance="outline" fxFlex class="pr-4">
+                        <label>Status</label>
+                        <mat-radio-group aria-label="Select an option" required formControlName="residency">
+                          <mat-radio-button value="resident">Resident</mat-radio-button>
+                          <mat-radio-button value="nonResident">Non Resident</mat-radio-button>
+                        </mat-radio-group>
+                        <mat-error *ngIf="!isRadioButtonTouched">status is required!</mat-error>
+                      </div>
+                      <mat-form-field appearance="outline" fxFlex class="pr-4">
+                        <mat-label>PAN</mat-label>
+                        <input type="text" matInput formControlName="pan" (keyup)="form.patchValue({pan: $event.target.value.toUpperCase()})" required>
+                        <mat-error>PAN is required!</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutAlign="start center">
+
+                      <mat-form-field appearance="outline" fxFlex class="pr-4">
+                        <mat-label>Email</mat-label>
+                        <input type="email" matInput formControlName="emailID" required>
+                        <mat-error>Email is required!</mat-error>
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" fxFlex class="pr-4">
+                        <mat-label>Mobile No</mat-label>
+                        <span style="position:relative;top:-5px;" matPrefix>+91 &nbsp;</span>
+                        <input type="number" matInput formControlName="mobileNo" required>
+                        <mat-error>Mobile No is required!</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </form>                 
+
+                  <div fxLayout="row" fxLayoutAlign="center center">
+                    <button class="mr-8" mat-raised-button type="submit" (click)="save()" color="accent">
+                      Save
+                    </button>
+                    <button mat-raised-button type="button" color="basic" (click)="clear()">
+                      Clear
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Sellers List">
+            <div class="products tab-content p-24 " fusePerfectScrollbar>
+              <div fxLayout="column ">
+               
+                  <form name="searchForm" fxLayout="row wrap ">
+                    <div fxFlex>
+                      <mat-form-field appearance="outline" fxFlex class="search-textbox">
+                        <mat-label>Sellar Name</mat-label>
+                        <input matInput name="searchBySellerName" [(ngModel)]="searchBySellerName">
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex>
+                      <mat-form-field appearance="outline" fxFlex class="search-textbox" (keyup)="  $event.target.value=$event.target.value.toUpperCase()">
+                        <mat-label>PAN</mat-label>
+                        <input matInput name="searchBySellerPan" [(ngModel)]="searchBySellerPan">
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex>
+                      <mat-form-field appearance="outline" fxFlex class="search-textbox">
+                        <mat-label>Mobile No</mat-label>
+                        <input matInput name="searchByMobile" [(ngModel)]="searchByMobile" type="number">
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex>
+                      <button class="search_button" mat-raised-button type="submit" (click)="search()" color="accent">
+                        Search
+                        <mat-icon class="s-22" style="margin-left:5px">search</mat-icon>
+                      </button>
+                      <button class="search_button" mat-raised-button type="button" color="basic" (click)="reset()">
+                        Reset
+                        <mat-icon class="s-22" style="margin-left:5px">refresh</mat-icon>
+                      </button>
+                    </div>
+                  </form>
+               
+                <div fxLayout="row wrap">
+                  <div fxFlex>
+                    <grid *ngIf="showListGrid" [dataSet]="rowData" [gridColDef]="columnDef" [rowSelection]="'undefined'" (editRow)="editRow($event)" (deleteRow)="deleteRow($event)" [showFooter]="true"></grid>
+                  </div>
+                </div>
+              </div>            
+
+            </div>
+          </mat-tab>
+
+        </mat-tab-group>
+
+      </div>
+      <!-- / CONTENT -->
+
+    </div>
+    <!-- / CONTENT CARD -->
+
+  </div>
+  <!-- / CENTER -->
+</div>
+
+
+
