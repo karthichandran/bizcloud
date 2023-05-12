@@ -50,5 +50,7 @@ namespace ReProServices.Application.TdsRemittance
         public string F16BRequestNo { get; set; }
 
         public bool OnlyTDS { get; set; }
+
+        public bool IsDebitAdvice { get; set; }
     }
 }

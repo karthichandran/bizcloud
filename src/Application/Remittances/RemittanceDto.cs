@@ -34,6 +34,14 @@ namespace ReProServices.Application.Remittances
         public virtual int LotNo { get; set; }
         public  virtual DateTime DateOfBirth { get; set; }
         public virtual string CustomerPAN { get; set; }
+
+        //Debit advice 
+        public int? DebitAdviceID { get; set; }
+        public string CinNo { get; set; }
+        public DateTime? PaymentDate { get; set; }
+
+        public int? DebitAdviceBlobId { get; set; }
+
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Remittance, RemittanceDto>();

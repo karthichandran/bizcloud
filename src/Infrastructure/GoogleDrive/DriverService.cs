@@ -16,9 +16,9 @@ namespace ReProServices.Infrastructure.GoogleDrive
     public class DriverService
     {
         private string PathToServiceAccountKeyFile = @"C:\Dev\DriveAccess\reprodrive-955e16186739.json";
-        // private const string filePath = @"GoogleDrive\repro-documents-2eb3e6f98a0c.json";
+         private const string filePath = @"GoogleDrive\repro-documents-2eb3e6f98a0c.json";
         //client_secret_1055780356051-s6ejr6c7reke73kp5bopqg8sofrp6a9o.apps.googleusercontent.com
-        private const string filePath = @"GoogleDrive\biz-key.json";
+      //  private const string filePath = @"GoogleDrive\biz-key.json";
         public async Task<string> AddFile(string fileName,string fileType, MemoryStream ms) {
            // PathToServiceAccountKeyFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"GoogleDrive\reprodrive-955e16186739.json");
            // PathToServiceAccountKeyFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"GoogleDrive\prestige-storage-354906-ec7dc385c854.json");
@@ -55,50 +55,56 @@ namespace ReProServices.Infrastructure.GoogleDrive
 
         public MemoryStream GetFile(string id) {
 
-            PathToServiceAccountKeyFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), filePath);
-
-            var credential = GoogleCredential.FromFile(PathToServiceAccountKeyFile)
-                .CreateScoped(DriveService.ScopeConstants.Drive);
-
-            var service = new DriveService(new BaseClientService.Initializer()
+            try
             {
-                HttpClientInitializer = credential
-            });
+                PathToServiceAccountKeyFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), filePath);
 
-            //var request = service.Files.Get("1n1Y80fq6jwkk6InMLUyu5D9ZLyzIPCBA");
-            var request = service.Files.Get(id);
-            var stream = new MemoryStream();
+                var credential = GoogleCredential.FromFile(PathToServiceAccountKeyFile)
+                    .CreateScoped(DriveService.ScopeConstants.Drive);
 
-            // Add a handler which will be notified on progress changes.
-            // It will notify on each chunk download and when the
-            // download is completed or failed.
-            request.MediaDownloader.ProgressChanged +=
-                progress =>
+                var service = new DriveService(new BaseClientService.Initializer()
                 {
-                    switch (progress.Status)
+                    HttpClientInitializer = credential
+                });
+
+                //var request = service.Files.Get("1n1Y80fq6jwkk6InMLUyu5D9ZLyzIPCBA");
+                var request = service.Files.Get(id);
+                var stream = new MemoryStream();
+
+                // Add a handler which will be notified on progress changes.
+                // It will notify on each chunk download and when the
+                // download is completed or failed.
+                request.MediaDownloader.ProgressChanged +=
+                    progress =>
                     {
-                        case DownloadStatus.Downloading:
-                            {
-                                Console.WriteLine(progress.BytesDownloaded);
-                                break;
-                            }
-                        case DownloadStatus.Completed:
-                            {
-                                Console.WriteLine("Download complete.");
-                                break;
-                            }
-                        case DownloadStatus.Failed:
-                            {
-                                Console.WriteLine("Download failed.");
-                                break;
-                            }
-                    }
-                };
+                        switch (progress.Status)
+                        {
+                            case DownloadStatus.Downloading:
+                                {
+                                    Console.WriteLine(progress.BytesDownloaded);
+                                    break;
+                                }
+                            case DownloadStatus.Completed:
+                                {
+                                    Console.WriteLine("Download complete.");
+                                    break;
+                                }
+                            case DownloadStatus.Failed:
+                                {
+                                    Console.WriteLine("Download failed.");
+                                    break;
+                                }
+                        }
+                    };
 
 
-            request.Download(stream);
+                request.Download(stream);
 
-            return stream;
+                return stream;
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
         }
 
         public bool DeleteFile(string id) {

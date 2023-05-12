@@ -12,6 +12,7 @@ import * as moment from 'moment';
 //import { isNullOrUndefined, isUndefined } from 'util';
 import * as fileSaver from 'file-saver';
 import { ConfirmationDialogService } from '../core/confirmation-dialog/confirmation-dialog.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tds-remitance',
@@ -21,12 +22,14 @@ import { ConfirmationDialogService } from '../core/confirmation-dialog/confirmat
 })
 export class TdsRemitanceComponent implements OnInit, OnDestroy {
   @ViewChild('stepper') private myStepper: MatStepper;
+  debitAdviceForm: UntypedFormGroup;
   challanform: UntypedFormGroup;
   requestform: UntypedFormGroup;
   form16b: UntypedFormGroup;
 
   challanFile: any = {};
   form16File: any = {};
+  debitAdviceFile:any={};
   challnFileName: string;
   f16FileName: string;
   showFileUpload: boolean;
@@ -41,6 +44,7 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
 
   isChallanUpload: boolean;
   isF16Upload: boolean;
+  isDebitAdviceUpload:boolean;
   //Search
   searchByPremises: string;
   searchByCustomer: string;
@@ -54,6 +58,14 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {  
+
+ 
+    this.debitAdviceForm = this._formBuilder.group({
+      paymentDate: ['',Validators.required],
+      cinNo: ['', Validators.required],
+      debitAdviceID:['']
+
+    });
 
     this.challanform = this._formBuilder.group({
       challanDate: ['',Validators.required],
@@ -162,6 +174,24 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
     return true;
   }
 
+  validateDebitAdvice() {
+    if (!this.debitAdviceForm.valid) {
+      Object.keys(this.debitAdviceForm.controls).forEach(field => {
+        const control = this.debitAdviceForm.get(field);
+        control.markAsTouched({ onlySelf: true });
+      });
+      this.toastr.error("Please fill the required fields");
+      return false;
+    }
+    let model = this.debitAdviceForm.value;
+    if (model.cinNo == 0) {
+      this.toastr.error("CIN No. must not be 0");
+      return false;
+    }
+    return true;
+  }
+
+
   save(type: any): void {
     let remitmodel= this.remitanceModel;
     if (type == "challan") {
@@ -191,10 +221,20 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
       remitmodel.f16CustName = model.f16CustName;
       remitmodel.f16UpdateDate = moment(model.f16UpdateDate).local().format("YYYY-MM-DD");
       remitmodel.f16CreditedAmount = model.f16CreditedAmount;
-
     }
 
-    this.saveRemitance(remitmodel);
+    if (type == "debitAdvice") {
+      if (!this.validateDebitAdvice())
+        return;
+      let model = this.debitAdviceForm.value;
+      remitmodel.cinNo = model.cinNo;
+      remitmodel.paymentDate = moment(model.paymentDate).local().format("YYYY-MM-DD");
+    }
+
+    if (type == "debitAdvice")
+      this.saveDebitAvice(remitmodel);
+    else
+      this.saveRemitance(remitmodel);
   }
 
   saveRemitance(model: any) {
@@ -220,6 +260,26 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
     });
   }
 
+  saveDebitAvice(model:any){
+    let isNew: boolean;
+    if (model.debitAdviceID == 0 || model.debitAdviceID==null || model.debitAdviceID==undefined)
+      isNew = true;
+
+    if (model.clientPaymentTransactionID == 0)
+      model.clientPaymentTransactionID = this.transactionID;
+    var da = {
+      debitAdviceID:( model.debitAdviceID==null ||  model.debitAdviceID==undefined)?0: model.debitAdviceID,
+      cinNo: model.cinNo,
+      paymentDate: model.paymentDate,
+      blobId: this.debitAdviceFile.blobID,
+      clientPaymentTransactionID: model.clientPaymentTransactionID
+    };
+
+      this.tdsService.saveDebitAdvice(da, isNew).subscribe(response => {
+        this.toastr.success("Debit Advice changes are saved successfully");
+        this.getRemitance(this.transactionID.toString());
+      });
+  }
   /**
      * On destroy
      */
@@ -303,6 +363,14 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
   }
 
   loadRemitanceDetails(model: any, challanamount: number) {
+
+    if(model.debitAdviceID==0){
+      this.isDebitAdviceUpload=false;
+    }
+    else{
+      this.getFiles(model.debitAdviceBlobId,'debitAdvice');
+    }
+
     if (model.remittanceID == 0) {
       model.challanAmount = challanamount;
       model.challanDate = moment(moment().local().format("DD-MMM-YYYY")).format();
@@ -312,15 +380,16 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
     }
     else {
       this.showFileUpload = true;
-      //this.getFiles(model.challanFileID, "challan");
-      //this.getFiles(model.f16BFileID, "form16");
       this.getFiles(model.challanBlobID, "challan");
       this.getFiles(model.form16BlobID, "form16");
-    }
+      
+    }   
+   
     this.challanform.patchValue(model);
     this.requestform.patchValue(model);
-    this.requestform.get('dateOfBirth').setValue(moment(model.dateOfBirth).format("DDMMYYYY"))
+    this.requestform.get('dateOfBirth').setValue(moment(model.dateOfBirth).format("DDMMYYYY"));
     this.form16b.patchValue(model);
+    this.debitAdviceForm.patchValue(model);
   }
 
   selectedstepperIndex(eve) {
@@ -328,10 +397,13 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
   }
 
   Next(stepper: MatStepper, index: number) {
-    if (index == 1 && this.challanform.valid) {
+    if (index == 1) {
       stepper.next();
     }
-    if (index == 2 && this.requestform.valid) {
+    if (index == 2 && this.challanform.valid) {
+      stepper.next();
+    }
+    if (index == 3 && this.requestform.valid) {
       stepper.next();
     }
   }
@@ -340,21 +412,33 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
 
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
-     // let ownershipId: string;
       let category: number;
       if (fileType == "challan") {
         this.challnFileName = file.name;
-       // ownershipId = this.remitanceModel.challanFileID;
         category = 7;
       }
       if (fileType == "form16") {
         this.f16FileName = file.name;
-      //  ownershipId = this.remitanceModel.f16BFileID;
         category = 6;
       }
     
       let formData = new FormData();
       formData.append(file.name, file);
+
+      if(fileType=='debitAdvice'){
+        
+        this.tdsService.uploadDebitAdviceFile(formData).subscribe((event) => {
+          if (event.body != undefined) {
+            this.toastr.success("File Uploaded successfully");
+            this.remitanceModel.debitAdviceBlobId = event.body;
+            this.getFiles(this.remitanceModel.debitAdviceBlobId, 'debitAdvice');
+          }
+        }, null, () => {
+            this.getRemitance(this.transactionID.toString());
+        });
+
+      }
+      else{     
            
       this.tdsService.uploadFile(formData, this.remitanceModel.remittanceID, category).subscribe((event) => {
         if (event.type == HttpEventType.Sent) {
@@ -362,9 +446,8 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
         }       
       }, null, () => {
           this.getRemitance(this.transactionID.toString());
-          //this.getFiles(ownershipId, fileType);
       });
-
+    }
     }
   }
 
@@ -375,20 +458,28 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
         this.challanFile = {};
         this.isChallanUpload = false;
       }
-      else {
+       if(fileType=="form16"){
         this.form16File = {};
         this.isF16Upload = false;
       }
+      if(fileType=="debitAdvice"){
+        this.debitAdviceFile={};
+        this.isDebitAdviceUpload=false;
+      }
       return;
     }
+
     this.tdsService.getUploadedFiles(blobId).subscribe(response => {
       // if (isUndefined(response.fileName)) {
-        if (response.fileName===undefined) {
+        if ( response==null  || response.fileName===undefined ) {
         if (fileType == "challan") {
           this.isChallanUpload = false;
         }
-        else {
+        else if(fileType=="form16"){
           this.isF16Upload = false;
+        }
+        else if(fileType=="debitAdvice"){
+          this.isDebitAdviceUpload=false;
         }
         return;
       }
@@ -396,11 +487,14 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
         this.challanFile = response;
         this.isChallanUpload = true;
       }
-      else {
+      else  if(fileType=="form16"){
         this.form16File = response;
         this.isF16Upload = true;
       }
-
+      else if(fileType=="debitAdvice"){
+        this.debitAdviceFile=response;
+        this.isDebitAdviceUpload=true;
+      }
     });
   }
 
@@ -455,9 +549,13 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
         this.challanFile = {};
         this.isChallanUpload = false;
       }
-      else {
+      else if(fileType=="form16"){
         this.form16File = {};
         this.isF16Upload = false;
+      }
+      else{
+        this.debitAdviceFile={};
+        this.isDebitAdviceUpload=false;
       }
     });
   }
@@ -475,5 +573,38 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  deletedebitAdvice() {
+    if (this.remitanceModel.debitAdviceID == undefined || this.remitanceModel.debitAdviceID == 0)
+      return;
+
+    this.confirmationDialogSrv.showDialog("Are you sure to delete this Debit Advice?").subscribe(response => {
+      if (response == "ok") {
+        if (this.remitanceModel.debitAdviceID != undefined) {
+
+          this.tdsService.deleteDebitAdvice(this.transactionID.toString()).subscribe(response => {
+            if (this.debitAdviceFile.blobID != null && this.debitAdviceFile.blobID != 0 && this.debitAdviceFile.blobID != undefined) {
+              this.tdsService.deleteFile(this.remitanceModel.debitAdviceBlobId).subscribe(response => {
+                this.resetAfterDelete();
+              });
+            }
+            else {
+              this.resetAfterDelete();
+            }
+            
+          });
+        }
+       
+      }
+    });
+
+  }
+
+  resetAfterDelete(){
+    this.toastr.success("Record is deleted successfully");
+    this.debitAdviceForm.reset();
+    this.isDebitAdviceUpload=false;
+    this.getRemitance(this.transactionID.toString());
   }
 }

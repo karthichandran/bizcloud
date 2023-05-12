@@ -102,6 +102,7 @@ namespace ReProServices.Infrastructure.Persistence
         public DbSet<BankAccountDetails> BankAccountDetails { get; set; }
         public DbSet<ViewCustomerReport> ViewCustomerReports { get; set; }
         public DbSet<Message> Message { get; set; }
+        public DbSet<DebitAdvice> DebitAdvices { get; set; }
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             //foreach (var entry in ChangeTracker.Entries<AuditableEntity>())

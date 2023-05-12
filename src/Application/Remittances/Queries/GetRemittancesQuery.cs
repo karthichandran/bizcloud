@@ -56,6 +56,7 @@ namespace ReProServices.Application.Remittances.Queries
                                      PAN = cp.CustomerPAN,
 
                                  }).FirstOrDefaultAsync(cancellationToken);
+                var da = _context.DebitAdvices.Where(x => x.ClientPaymentTransactionID == request.ClientPaymentTransactionID).FirstOrDefault();
 
                 vm.UnitNo = det.UnitNo;
                 vm.LotNo = det.LotNo;
@@ -63,6 +64,13 @@ namespace ReProServices.Application.Remittances.Queries
                 vm.Premises = det.PropertyPremises;
                 vm.DateOfBirth = det.DateOfBirth;
                 vm.CustomerPAN = det.PAN;
+                if (da != null)
+                {
+                    vm.DebitAdviceID = da.DebitAdviceID;
+                    vm.CinNo = da.CinNo;
+                    vm.PaymentDate = da.PaymentDate;
+                    vm.DebitAdviceBlobId = da.BlobId;
+                }
                 return vm;
             }
         }

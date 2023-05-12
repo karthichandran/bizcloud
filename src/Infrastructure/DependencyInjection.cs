@@ -25,7 +25,7 @@ namespace ReProServices.Infrastructure
 
             services.AddDbContext<ApplicationDbContext>(options =>
                options.UseSqlServer(
-                   configuration.GetConnectionString("DefaultConnection"))); 
+                   configuration.GetConnectionString("DefaultConnection"), providerOptions => { providerOptions.CommandTimeout(300); })); 
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 

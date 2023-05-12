@@ -50,7 +50,7 @@ namespace ReProServices.Application.Common.Formulas
         {
             //truncate will ignore decimal values after 2 numbers
             var trunc = Math.Truncate(100* ((tf.AmountShare / tf.AmountValue) * tf.TdsPercentage))/100;
-            return Math.Ceiling(trunc);
+            return Math.Round(trunc,MidpointRounding.AwayFromZero);
         }
 
         public static decimal CalculateGst(TaxesAndFees tfObj)

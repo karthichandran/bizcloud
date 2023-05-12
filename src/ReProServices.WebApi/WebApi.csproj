@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+	 <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
     <AssemblyVersion>1.1.0.1</AssemblyVersion>
     <FileVersion>1.1.0.1</FileVersion>
     <PublishChromeDriver>true</PublishChromeDriver>

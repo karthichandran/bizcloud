@@ -27,7 +27,9 @@ namespace ReProServices.Application.TdsRemittance.Queries.GetRemittanceList
                                          join cpt in _context.ClientPaymentTransaction on pay.ClientPaymentID equals cpt.ClientPaymentID
                                          join cp in _context.ViewCustomerPropertyExpanded on new { cpt.OwnershipID, cpt.CustomerID } equals new { cp.OwnershipID, cp.CustomerID }
                                          join sp in _context.ViewSellerPropertyExpanded on cp.PropertyID equals sp.PropertyID
-                                         where cpt.RemittanceStatusID == (int)ERemittanceStatus.Pending
+                                    join da in _context.DebitAdvices on cpt.ClientPaymentTransactionID equals da.ClientPaymentTransactionID into xObj
+                                    from dam in xObj.DefaultIfEmpty()
+                                    where cpt.RemittanceStatusID == (int)ERemittanceStatus.Pending
                                                && pay.NatureOfPaymentID == (int)ENatureOfPayment.ToBeConsidered
                                                && cpt.SellerID == sp.SellerID && cp.StatusTypeID!=3
                                          select new TdsRemittanceDto
@@ -58,6 +60,7 @@ namespace ReProServices.Application.TdsRemittance.Queries.GetRemittanceList
                                              TdsAmount = cpt.Tds,
                                              AmountShare = cpt.ShareAmount,
                                              RemittanceStatusID = cpt.RemittanceStatusID,
+                                             IsDebitAdvice=dam!=null?true:false
                                          })
                     .PreFilterRemittanceBy(request.Filter)
                     .ToList()
