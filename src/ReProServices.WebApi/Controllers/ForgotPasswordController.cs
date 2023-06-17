@@ -63,8 +63,8 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("testmail")]
-        public async Task<ActionResult> TestMail()
-        {         
+        public ActionResult TestMail()
+        {
             var filePath = @Directory.GetCurrentDirectory() + "\\Resources\\logo.png";
             Bitmap b = new Bitmap(filePath);
             MemoryStream ms = new MemoryStream();

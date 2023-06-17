@@ -34,7 +34,7 @@ namespace ReProServices.Infrastructure.GoogleDrive
             var fileMetadata = new Google.Apis.Drive.v3.Data.File()
             {              
                 Name= fileName,                
-                Parents = new List<string>() { "1K1TzC-F1ZeZQjM3wHdF6GwrswB8VpaKq" }//folder id  prestige_docs
+                Parents = new List<string>() { "1cDI1e-NSEbJSCEzIl2Ale0RFQ3WBMKRX" }//folder id  repro_docs
             };
             string uploadedFileId;
             // Create a new file, with metadata and stream.

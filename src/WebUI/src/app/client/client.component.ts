@@ -130,7 +130,7 @@ export class ClientComponent implements OnInit, OnDestroy {
       pinCode: [''],
       pan: ['',Validators.compose( [Validators.required, this.panValidator(),Validators.maxLength(10)])],
       emailID: ['', Validators.email],
-      mobileNo: ['', Validators.compose([Validators.required,,Validators.maxLength(15)])],
+      mobileNo: [''],
       dateOfBirth: ['', Validators.required],
       isTracesRegistered: [''],
       traces: ['no'],
@@ -315,7 +315,7 @@ export class ClientComponent implements OnInit, OnDestroy {
 
       //To Reset control validators
       var formcontrl = this.customerform;
-      _.forEach(['name', 'addressPremises', 'mobileNo', 'emailID', 'pan', 'dateOfBirth'], function (item) {
+      _.forEach(['name',  'emailID', 'pan', 'dateOfBirth'], function (item) {
         let control = formcontrl.get(item);
         control.setErrors(null);
       });
@@ -1214,7 +1214,7 @@ export class ClientComponent implements OnInit, OnDestroy {
     this.confirmationDialogSrv.showDialog("Are you sure to delete this customer?").subscribe(response => {
       if (response == "ok") {
         let ownershipid: string;
-        if (curCus.customerProperty != null)
+        if (curCus.customerProperty != null && curCus.customerProperty!=undefined && curCus.customerProperty.length>0)
           ownershipid = curCus.customerProperty[0].ownershipID;
         this.clientService.deleteCustomer(id, ownershipid).subscribe(res => {
           this.toastr.success("Customer is deleted successfully");

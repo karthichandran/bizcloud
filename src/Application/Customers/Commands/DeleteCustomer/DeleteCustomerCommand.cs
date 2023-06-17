@@ -53,14 +53,25 @@ namespace ReProServices.Application.Customers.Commands.DeleteCustomer
                     if(clientPaymentTrans.Any())
                         throw new ApplicationException("Cannot Delete Customer. Customer has Payment transaction");
 
-                    var customerProperty= _context.CustomerProperty.Where(x => x.CustomerId == request.CustomerID).ToList();
+                    //var customerProperty= _context.CustomerProperty.Where(x => x.CustomerId == request.CustomerID).ToList();
+                    //if (customerProperty.Count == 1)
+                    //{
+                    //    var cust = _context.Customer.First(x => x.CustomerID == request.CustomerID);
+                    //    _ = _context.Customer.Remove(cust);
+                    //    await _context.SaveChangesAsync(cancellationToken);
+                    //}
+                    //var custProp=_context.CustomerProperty.First(x => x.CustomerId == request.CustomerID && x.OwnershipID == request.OwnershipID);
+                    //_ = _context.CustomerProperty.Remove(custProp);
+                    //await _context.SaveChangesAsync(cancellationToken);
+
+                    var customerProperty = _context.CustomerProperty.Where(x => x.OwnershipID == request.OwnershipID).ToList();
                     if (customerProperty.Count == 1)
                     {
                         var cust = _context.Customer.First(x => x.CustomerID == request.CustomerID);
                         _ = _context.Customer.Remove(cust);
-                        await _context.SaveChangesAsync(cancellationToken);
+
                     }
-                    var custProp=_context.CustomerProperty.First(x => x.CustomerId == request.CustomerID && x.OwnershipID == request.OwnershipID);
+                    var custProp = _context.CustomerProperty.First(x => x.CustomerId == request.CustomerID && x.OwnershipID == request.OwnershipID);
                     _ = _context.CustomerProperty.Remove(custProp);
                     await _context.SaveChangesAsync(cancellationToken);
                 }

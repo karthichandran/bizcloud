@@ -52,7 +52,7 @@
 
                   <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-10">
                     <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>Name (As in PAN)</mat-label>
+                      <mat-label>Name </mat-label>
                       <input matInput formControlName="name" required>
                       <mat-error>Name is required!</mat-error>
                     </mat-form-field>
@@ -66,9 +66,7 @@
                         <span matSuffix class="pan-upload" (click)="panUploadClick(panDocument)">
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="rgb(3,155,229)" /></svg>
                         </span>
-                        <!--<span matSuffix class="pan-upload" (click)="panDocument.click()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="rgb(3,155,229)" /></svg>
-        </span>-->
+                      
                         <mat-error>Valid PAN is required!</mat-error>
                       </mat-form-field><br />
                       <div *ngIf="panDoc.fileName" class="padding-bottom-10">
@@ -81,7 +79,6 @@
                     <mat-form-field appearance="outline" fxFlex>
                       <mat-label>Name of the premises/Building/village</mat-label>
                       <input matInput formControlName="addressPremises">
-                      <!--<mat-error>promises/Building/village is required!</mat-error>-->
                     </mat-form-field>
                     <div fxFlex fxLayoutAlign="first center" *ngIf="showAddressClearBtn">
                       <button mat-raised-button type="button" class="Address-clear" (click)="clearAddress()" color="accent">
@@ -139,8 +136,8 @@
                       </mat-form-field>
                       <mat-form-field appearance="outline" fxFlex="80" style="padding-left:0px;margin-left:0px;">
                         <mat-label>Mobile</mat-label>
-                        <input matInput type="number" maxlength="10" formControlName="mobileNo" required>
-                        <mat-error>Mobile is required!</mat-error>
+                        <input matInput type="number" maxlength="10" formControlName="mobileNo" >
+                      
                       </mat-form-field>
                     </div>
                     <div fxFlex fxLayout="row" style="width:100%">
