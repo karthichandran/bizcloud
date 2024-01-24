@@ -1,0 +1,140 @@
+<div id="user" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+  
+      <!-- HEADER -->
+      <div class="header accent"
+           fxLayout="row" fxLayoutAlign="space-between center">
+  
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+         
+  
+          <div fxLayout="column" fxLayoutAlign="start start"
+               [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+            <div class="h2">
+              Remarks
+            </div>
+  
+          </div>
+        </div>
+        <!-- / APP TITLE -->
+  
+      </div>
+      <!-- / HEADER -->
+      <!-- CONTENT CARD -->
+      <div class="content-card">
+  
+        <!-- CONTENT -->
+        <div class="content">
+  
+          <mat-tab-group fxLayout="column" (selectedTabChange)="tabChanged($event)"  fxFlex>
+  
+            <mat-tab label="Remark Details" #tab1>
+  
+              <div class="order-details tab-content p-24" fusePerfectScrollbar>
+  
+                <div class="section pb-48">
+  
+                  <!-- REACTIVE FORM EXAMPLE -->
+  
+                  <form class="mat-card mat-elevation-z4 p-24 mr-24" fxLayout="column" name="form" [formGroup]="remarkForm">
+  
+                    <div class="h2 mb-24">Remark Creation</div>
+  
+                 
+                 
+                    <div fxFlex="1 0 auto" fxLayout="row wrap">
+                      <mat-form-field appearance="outline" fxFlex class="pr-4">
+                        <mat-label>Remark</mat-label>
+                        <input type="text" matInput formControlName="description" required>
+                        <mat-error>Remark is required!</mat-error>
+                      </mat-form-field>
+                  
+                    </div>
+
+                    <div fxFlex="1 0 auto" fxLayout="row wrap">
+                        <div appearance="outline" fxFlex class="pr-4">
+                            <label>Remark Type</label><br />
+                            <mat-radio-group aria-label="Select an option" formControlName="isRemittance" >
+                                <mat-radio-button [checked]="remarkForm.value.isRemittance === true" value="true">Remittance</mat-radio-button>
+                                <mat-radio-button [checked]="remarkForm.value.isRemittance === false" value="false">Traces</mat-radio-button>
+                              </mat-radio-group>
+                          </div>
+                       
+                    </div>
+                   
+                   
+  
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                      <button class="mr-8" mat-raised-button type="submit" (click)="save()" color="accent" [disabled]="!showButtons">
+                        Save
+                      </button>
+                      <button mat-raised-button type="button" color="basic" (click)="clear()">
+                        Clear
+                      </button>
+                    </div>
+  
+                  </form>
+  
+                </div>
+  
+              </div>
+            </mat-tab>
+  
+            <mat-tab label="Remarks List">
+              <div class="products tab-content p-24 " fusePerfectScrollbar>
+                <div fxLayout="column ">
+                  <form name="searchForm" fxLayout="row wrap ">
+                   
+                    <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                      <mat-label>Search Option</mat-label>
+                      <mat-select name="searchByRemarkType" [(ngModel)]="searchByRemarkType">
+                        <mat-option *ngFor="let option of RemarksTypesDDl" [value]="option.remarkTypeId">
+                          {{option.remarkTypeDesc}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <div fxFlex>
+                      <button class="search_button" mat-raised-button type="submit" (click)="search()" color="accent">
+                        Search
+                        <mat-icon class="s-22" style="margin-left:5px">search</mat-icon>
+                      </button>
+                      <button class="search_button" mat-raised-button type="button" color="basic" (click)="reset()">                    
+                        Reset
+                        <mat-icon class="s-22" style="margin-left:5px">refresh</mat-icon>
+                      </button>
+                    </div>
+  
+                  </form>   
+  
+                  <div fxLayout="row wrap">
+                    <div fxFlex>
+                        <grid *ngIf="showListGrid" [dataSet]="rowData" [gridColDef]="columnDef" [rowSelection]="'undefined'" (editRow)="editRow($event)" (deleteRow)="deleteRow($event)" [showFooter]="true"></grid>
+                    </div>
+                  </div>
+                </div>
+                <!--<grid [dataSet]="rowData" [gridColDef]="columnDef" (selectedRows)="selectedRows($event)"></grid>-->
+  
+              </div>
+            </mat-tab>
+  
+          </mat-tab-group>
+  
+        </div>
+        <!-- / CONTENT -->
+  
+      </div>
+      <!-- / CONTENT CARD -->
+  
+    </div>
+    <!-- / CENTER -->
+  </div>
+  
+  
+  
+  

@@ -34,7 +34,7 @@ namespace ReProServices.Application.TdsRemittance.Queries
                         join sp in _context.ViewSellerPropertyExpanded on cp.PropertyID equals sp.PropertyID
                         join r in _context.Remittance on cpt.ClientPaymentTransactionID equals  r.ClientPaymentTransactionID
                         join remSt in _context.RemittanceStatus on cpt.RemittanceStatusID equals remSt.RemittanceStatusID 
-                        where cpt.RemittanceStatusID >= (int)ERemittanceStatus.TdsPaid
+                        where (request.Filter.RemittanceStatusID.HasValue) ? true : cpt.RemittanceStatusID >= (int)ERemittanceStatus.TdsPaid
                               && cpt.SellerID == sp.SellerID
                         select new TdsRemittanceDto
                         {

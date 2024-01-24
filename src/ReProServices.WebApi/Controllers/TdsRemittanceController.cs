@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReProServices.Application.ClientPayments.Commands;
@@ -226,6 +227,10 @@ namespace WebApi.Controllers
             return File(ms, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "TdsRemittanceReport.xls");
 
         }
-
+        [HttpPut("remittanceStatus/{clientPaymentTransactionID}/{statusId}")]
+        public async Task<Unit> Update(int clientPaymentTransactionID, int statusId)
+        {
+            return await Mediator.Send(new UpdateRemittanceStatusCommand { ClientPaymentTransactionID = clientPaymentTransactionID, StatusID = statusId });
+        }
     }
 }
