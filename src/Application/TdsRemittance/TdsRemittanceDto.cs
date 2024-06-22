@@ -54,5 +54,6 @@ namespace ReProServices.Application.TdsRemittance
         public bool IsDebitAdvice { get; set; }
         public int? RemarkId { get; set; }
         public string RemarkDesc { get; set; }
+        public string CinNo { get; set; }
     }
 }

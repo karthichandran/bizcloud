@@ -36,57 +36,59 @@ namespace WebApi.Controllers
             .HasColumnWidth(36)
             .HasColumnIndex(1);
 
+            settings.Property(x => x.PropertyName)
+                .HasColumnTitle("Premises")
+                .HasColumnWidth(36)
+                .HasColumnIndex(2);
+
             settings.Property(x => x.HasTracesPassword)
                .HasColumnTitle("Traces Password Y/N")
-               .HasColumnIndex(2);
+               .HasColumnIndex(3);
 
             settings.Property(x => x.Pan)
                 .HasColumnTitle("PAN Number")
                 .HasColumnWidth(14)
-                .HasColumnIndex(3);
+                .HasColumnIndex(4);
 
             settings.Property(x => x.DateOfBirth)
                 .HasColumnTitle("Date Of Birth")
                 .HasColumnFormatter("dd-MMM-yyy")
                 .HasColumnWidth(21)
-                .HasColumnIndex(4);
+                .HasColumnIndex(5);
 
             settings.Property(x => x.NameInChallan)
                .HasColumnTitle("Name as per the TDS paid Challan")
-               .HasColumnIndex(5);
+               .HasColumnIndex(6);
 
             settings.Property(x => x.NameInSystem)
               .HasColumnTitle("Name as per system")
               .HasColumnWidth(21)
-              .HasColumnIndex(6);
+              .HasColumnIndex(7);
 
             settings.Property(x => x.ChallanSerialNo)
              .HasColumnTitle("Challan Serial No")
              .HasColumnWidth(150)
-             .HasColumnIndex(7);
+             .HasColumnIndex(8);
             settings.Property(x => x.AddressPremises)
              .HasColumnTitle("Address Premises")
-             .HasColumnIndex(8);
+             .HasColumnIndex(9);
             settings.Property(x => x.Address1)
             .HasColumnTitle("Address 1")
-            .HasColumnIndex(9);
+            .HasColumnIndex(10);
 
             settings.Property(x => x.Address2)
             .HasColumnTitle("Address 2")
-            .HasColumnIndex(10);
+            .HasColumnIndex(11);
             settings.Property(x => x.City)
             .HasColumnTitle("City")
-            .HasColumnIndex(11);
+            .HasColumnIndex(12);
             settings.Property(x => x.Pincode)
                         .HasColumnTitle("PinCode")
-                        .HasColumnIndex(12);
-
-
+                        .HasColumnIndex(13);
 
             settings.Property(_ => _.CustomerId).Ignored();
             settings.Property(_ => _.PropertyId).Ignored();
-            settings.Property(_ => _.PropertyName).Ignored();
-
+          
             var ms = result.ToExcelBytes();
 
             return File(ms, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "PasswordSettingReport.xls");

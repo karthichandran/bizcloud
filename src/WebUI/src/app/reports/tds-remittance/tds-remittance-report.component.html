@@ -48,10 +48,21 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <mat-form-field class="search-textbox" appearance="outline" fxFlex>
+            <!-- <mat-form-field class="search-textbox" appearance="outline" fxFlex>
               <mat-label>Premises</mat-label>
               <mat-select formControlName="premisesId">
                 <mat-option *ngFor="let option of premisesDDl" [value]="option.propertyID">
+                  {{option.addressPremises}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field> -->
+            <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+              <mat-label>Premises</mat-label>
+              <mat-select formControlName="premisesId" required #PropertyFilterSelect>
+                <mat-option>
+                  <ngx-mat-select-search [formControl]="propertyFilterCtrl"  placeholderLabel="Search"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let option of filteredProperty| async" [value]="option.propertyID">
                   {{option.addressPremises}}
                 </mat-option>
               </mat-select>

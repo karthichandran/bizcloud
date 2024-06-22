@@ -60,7 +60,8 @@ namespace ReProServices.Application.TdsRemittance.Queries.GetRemittanceList
                                              TdsAmount = cpt.Tds,
                                              AmountShare = cpt.ShareAmount,
                                              RemittanceStatusID = cpt.RemittanceStatusID,
-                                             IsDebitAdvice=dam!=null?true:false
+                                             IsDebitAdvice=dam!=null?true:false,
+                                             CinNo = dam.CinNo
                                          })
                     .PreFilterRemittanceBy(request.Filter)
                     .ToList()

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators, FormGroupDirective } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormGroupDirective,FormControl } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { fuseAnimations } from '@fuse/animations';
 import * as Xlsx from 'xlsx';
@@ -10,6 +10,9 @@ import { SellerComplianceReportService } from '../seller-compliance/seller-compl
 import { SellerService} from '../../seller/seller.service';
 import * as moment from 'moment';
 import * as fileSaver from 'file-saver';
+import { MatSelect } from '@angular/material/select';
+import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'seller-compliance-report',
@@ -26,6 +29,13 @@ export class SellerComplianceReportComponent implements OnInit, OnDestroy {
   unitNoDDl: any[] = [];
   sellerDDl: any[] = [];
   lotNoDDl: any[] = [];
+  activeProperty: any[] = [];
+//Property Filter
+public propertyFilterCtrl: FormControl = new FormControl();
+@ViewChild('PropertyFilterSelect', { static: true }) PropertyFilterSelect: MatSelect;
+/** Subject that emits when the component has been destroyed. */
+protected _onDestroy = new Subject<void>();
+public filteredProperty: ReplaySubject<any[]> = new ReplaySubject<any[]>();
 
   constructor(private _formBuilder: UntypedFormBuilder, private sellerReportSvc: SellerComplianceReportService,private sellerSvc:SellerService, private propertySvc: PropertyService, private toastr: ToastrService) {
   }
@@ -54,12 +64,17 @@ export class SellerComplianceReportComponent implements OnInit, OnDestroy {
     this.getReportList();
     this.getSellers();
     this.getLotNo();
+    this.propertyFilterCtrl.valueChanges.pipe(takeUntil(this._onDestroy))
+    .subscribe(() => {
+      this.filterProperty();
+    });
   }
 
   getProperties() {
     this.propertySvc.getProperties().subscribe(response => {
       this.premisesDDl = response;
       this.premisesDDl.splice(0, 0, { 'propertyID': '', 'addressPremises': '' });
+      this.activeProperty = _.filter(response, o => { return o.isActive == null || o.isActive == true; });
     });
   }
 
@@ -116,5 +131,24 @@ export class SellerComplianceReportComponent implements OnInit, OnDestroy {
     this.reportform.reset();
   }
 
-
+ //property Filter functionality for active property
+ protected filterProperty() {
+  if (!this.activeProperty) {
+    return;
+  }
+  // get the search keyword
+  let search = this.propertyFilterCtrl.value;
+  if (!search) {
+    this.filteredProperty.next(this.activeProperty.slice());
+    return;
+  } else {
+    search = search.toLowerCase();
+  }
+  // filter the banks
+  this.filteredProperty.next(this.filterProFun(search));
+}
+filterProFun(search) {
+  var list = this.activeProperty.filter(prop => prop.addressPremises.toLowerCase().indexOf(search) > -1);
+  return list;
+}
 }

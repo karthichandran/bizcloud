@@ -21,6 +21,7 @@ import { AuthenticationGuard } from 'app/core/authentication/authentication.guar
 import { StatementOfAccountComponent } from './statement-of-account/statement-of-account.component';
 import { PasswordSettingReportComponent } from './password-setting-report/password-setting-report.component';
 import { TaxPaymentReportComponent } from './tax-payment-report/tax-payment-report.component';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 const routes = [
   {
     path: 'status-report',
@@ -84,7 +85,8 @@ const routes = [
     MatDatepickerModule,
     FuseSharedModule,
     GridModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    NgxMatSelectSearchModule
   ]
 })
 export class ReportsModule {

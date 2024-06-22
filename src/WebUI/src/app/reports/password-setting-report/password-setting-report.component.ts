@@ -38,6 +38,7 @@ export class PasswordSettingReportComponent implements OnInit, OnDestroy {
     this.reportColumnDef = [
       { 'header': 'Lot No', 'field': 'lotNumber', 'type': 'label', 'width': 70 },
       { 'header': 'Unit No', 'field': 'unitNo', 'type': 'label', 'width': 70 },
+      { 'header': 'Premises', 'field': 'propertyName', 'type': 'label', 'width': 150 },
       { 'header': 'Traces Pwd', 'field': 'hasTracesPassword', 'type': 'label', 'width': 120 },
       { 'header': 'PAN', 'field': 'pan', 'type': 'label', 'width': 120 },
       { 'header': 'D.O.B', 'field': 'date', 'type': 'label', 'width': 130 },
